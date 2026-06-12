@@ -1,0 +1,2649 @@
+--[[
+
+██╗   ██╗██╗██████╗ ███████╗██████╗     ███████╗██╗     ██╗████████╗███████╗
+██║   ██║██║██╔══██╗██╔════╝██╔══██╗    ██╔════╝██║     ██║╚══██╔══╝██╔════╝
+██║   ██║██║██████╔╝█████╗  ██████╔╝    █████╗  ██║     ██║   ██║   █████╗
+╚██╗ ██╔╝██║██╔═══╝ ██╔══╝  ██╔══██╗    ██╔══╝  ██║     ██║   ██║   ██╔══╝
+ ╚████╔╝ ██║██║     ███████╗██║  ██║    ███████╗███████╗██║   ██║   ███████╗
+  ╚═══╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝    ╚══════╝╚══════╝╚═╝   ╚═╝   ╚══════╝          
+ 
+                   Made By Viper
+
+
+======== CONTROLS ===========
+
+    Lock/Unlock Menu Changes: Right Ctrl + Front Side Button
+    Auto Detect Operator: Right Shift + Left Click (on the operator in r6)
+    Swap Teams: Ctrl + Middle Mouse Button
+    Swap Guns: Ctrl + Back Side Mouse Button
+    Swap Scopes: Alt + Middle Mouse Button
+    Manually swap Operators: Alt + Back Side Mouse Button
+    Manually swap Operators Backwards: Right Ctrl + Back Side Button
+
+============================
+]]
+
+-- YOUR SETTINGS
+YourMouseModel = "PLACEHOLDER"  -- G Pro Superlight, G Pro, G502, G903, G403, G305, G703, G604, G309, G203
+YourDPI        = -999  -- Your mouses DPI
+YourHorizSens  = -999  -- Your horizontal sensitivity
+YourVertSens   = -999  -- Your vertical sensitivity
+UserFOV        = -999  -- Your In-Game FOV
+SensMultiplier = -999  -- Your MouseSensitivityMultiplierUnit in sieges files (Default: 0.02)
+AdvancedADSMultipliers = {
+    ["1x"]     = -999, -- Your 1x scope sensitivity
+    ["2.5x"]   = -999, -- Your 2.5x scope sensitivity
+}
+
+-- YOUT ATTACHMENTS
+CurrentGrip   = "angled grip" -- "vertical grip", "angled grip", "horizontal grip", "none"
+CurrentBarrel = "compensator" -- "compensator", "flash hider", "suppressor", "extended barrel", "none"
+
+-- AUTO DETECTION 
+EnableAutoDetection = false    
+AutoDetectModifier  = "rshift" 
+AutoDetectSetupMode = false    
+
+-- RAPID FIRE
+EnableRapidFire         = false 
+RapidFireKey            = 5     
+RapidFireMinDelay       = 15   
+RapidFireMaxDelay       = 50    
+RapidFireRecoilStrength = 6    
+
+AutoDetectConfig = {
+    start_x = 0, start_y = 0, end_x = 0, end_y = 0,
+    op_size_x = 0, op_size_y = 0, y_add = 0,
+    horizontal_count = 0, vertical_count = 0
+}
+
+-- GENERAL
+EnableRCS             = true      
+HorizontalControl     = true       
+VerticalControl       = true     
+RequireToggle         = true        
+ToggleKey             = "CapsLock" 
+HorizontalStrength    = 1.00        
+VerticalStrength      = 1.00        
+DefaultAttackerScope  = "2.5x"        -- Default scope for attackers: "1x" or "2.5x"
+DefaultDefenderScope  = "1x"        -- Default scope for defenders: "1x" or "2.5x"
+
+HumanizerStrength = 0 
+
+UseAdvancedADS             = true 
+GlobalADSMult              = 50   
+RecoilResetTime            = 30   
+RecoilStartDelay           = 0    
+DebugMode                  = false 
+HorizontalSensExponent     = 0.54  
+VerticalSensExponent       = 1     
+DelayRate                  = 7     
+currentAttackerFavorite    = 1     
+currentDefenderFavorite    = 1     
+AttachmentRecoilMultiplier = 1.0   
+MenuLocked                 = false
+
+OperatorWeapons = {
+    ash = {
+        r4c = {
+            SidePattern = {
+                {dir = -1, duration = 350, strength = 26},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 60, strength = 132},
+                {dir = 1, duration = 290, strength = 560},
+                {dir = 1, duration = 230, strength = 500},
+                {dir = 1, duration = 200, strength = 400},
+            },
+        },
+        g36c = {
+            SidePattern = {
+                {dir = 1, duration = 775, strength = 38},
+                {dir = 1, duration = 300, strength = 10},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 750, strength = 1230},
+                {dir = 1, duration = 1000, strength = 1800},
+            },
+        },
+    },
+    doc = {
+        mp5 = {
+            SidePattern = {
+                {dir = -1, duration = 650, strength = 25},
+                {dir = -1, duration = 775, strength = 58},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 150, strength = 242},
+                {dir = 1, duration = 270, strength = 400},
+                {dir = 1, duration = 800, strength = 1390},
+            },
+        },
+        p90 = {
+            SidePattern = {
+                {dir = -1, duration = 760, strength = 2.1},
+                {dir = 1, duration = 950, strength = 45},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 760, strength = 1100},
+                {dir = 1, duration = 760, strength = 1300},
+            },
+        },
+    },
+    twitch = {
+        f2 = {
+            SidePattern = {
+                {dir = -1, duration = 350, strength = 20},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 132},
+                {dir = 1, duration = 150, strength = 300},
+                {dir = 1, duration = 1000, strength = 2500},
+            },
+        },
+    },
+    dokkaebi = {
+        smg12 = {
+            SidePattern = {
+                {dir = 1, duration = 140, strength = 40},
+                {dir = 1, duration = 130, strength = 55},
+                {dir = -1, duration = 50, strength = 2},
+                {dir = -1, duration = 120, strength = 0},
+                {dir = -1, duration = 100, strength = 0},
+                {dir = -1, duration = 250, strength = 20},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 140},
+                {dir = 1, duration = 150, strength = 420},
+                {dir = 1, duration = 400, strength = 1130},
+                {dir = 1, duration = 400, strength = 1600},
+            },
+        },
+        c75auto = {
+            SidePattern = {
+                {dir = 1, duration = 1000, strength = 2},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 660},
+                {dir = 1, duration = 400, strength = 660},
+            },
+        },
+    },
+    brava = {
+        para308 = {
+            SidePattern = {
+                {dir = -1, duration = 1050, strength = 31},
+                {dir = -1, duration = 350, strength = 14},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 400, strength = 500},
+                {dir = 1, duration = 400, strength = 555},
+                {dir = 1, duration = 600, strength = 910},
+            },
+        },
+    },
+    mira = {
+        vector45acp = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 2},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 890},
+            },
+        },
+    },
+    goyo = {
+        vector45acp = {
+            SidePattern = {
+                {dir = -1, duration = 250, strength = 6},
+                {dir = -1, duration = 200, strength = 7},
+                {dir = 1, duration = 200, strength = 14},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 890},
+            },
+        },
+    },
+    valkyrie = {
+        mpx = {
+            SidePattern = {
+                {dir = -1, duration = 1050, strength = 10},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 800, strength = 1200},
+                {dir = 1, duration = 400, strength = 720},
+            },
+        },
+    },
+    zofia = {
+        m762 = {
+            SidePattern = {
+                {dir = 1, duration = 400, strength = 14},
+                {dir = 1, duration = 400, strength = 4},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 580, strength = 955},
+                {dir = 1, duration = 500, strength = 970},
+            },
+        },
+        lmge = {
+            SidePattern = {
+                {dir = -1, duration = 1500, strength = 100},
+                {dir = -1, duration = 200, strength = 33},
+                {dir = -1, duration = 500, strength = 52},
+                {dir = -1, duration = 500, strength = 57},
+                {dir = -1, duration = 500, strength = 36},
+                {dir = -1, duration = 500, strength = 51},
+                {dir = -1, duration = 500, strength = 68},
+                {dir = -1, duration = 500, strength = 40},
+                {dir = -1, duration = 500, strength = 60},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 715},
+                {dir = 1, duration = 400, strength = 790},
+                {dir = 1, duration = 400, strength = 820},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 820},
+                {dir = 1, duration = 400, strength = 820},
+                {dir = 1, duration = 400, strength = 820},
+                {dir = 1, duration = 400, strength = 820},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 810},
+            },
+        },
+    },
+    mute = {
+        smg11 = {
+            SidePattern = {
+                {dir = 1, duration = 650, strength = 16},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 150},
+                {dir = 1, duration = 150, strength = 340},
+            },
+        },
+        mp5k = {
+            SidePattern = {
+                {dir = -1, duration = 500, strength = 3},
+                {dir = -1, duration = 650, strength = 13},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 760, strength = 1100},
+                {dir = 1, duration = 760, strength = 1300},
+            },
+        },
+    },
+    smoke = {
+        smg11 = {
+            SidePattern = {
+                {dir = 1, duration = 650, strength = 16},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 150},
+                {dir = 1, duration = 150, strength = 340},
+            },
+        },
+        fmg9 = {
+            SidePattern = {
+                {dir = 1, duration = 500, strength = 2},
+                {dir = 1, duration = 650, strength = 10},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 760, strength = 1100},
+                {dir = 1, duration = 760, strength = 1300},
+            },
+        },
+    },
+    vigil = {
+        k1a = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 40},
+                {dir = -1, duration = 700, strength = 50},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 760, strength = 1250},
+                {dir = 1, duration = 760, strength = 1350},
+            },
+        },
+        smg12 = {
+            SidePattern = {
+                {dir = 1, duration = 140, strength = 40},
+                {dir = 1, duration = 130, strength = 55},
+                {dir = -1, duration = 50, strength = 2},
+                {dir = -1, duration = 120, strength = 0},
+                {dir = -1, duration = 100, strength = 0},
+                {dir = -1, duration = 250, strength = 20},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 140},
+                {dir = 1, duration = 150, strength = 420},
+                {dir = 1, duration = 400, strength = 1130},
+                {dir = 1, duration = 400, strength = 1600},
+            },
+        },
+        c75auto = {
+            SidePattern = {
+                {dir = 1, duration = 1000, strength = 2},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 660},
+                {dir = 1, duration = 400, strength = 660},
+            },
+        },
+    },
+    warden = {
+        smg12 = {
+            SidePattern = {
+                {dir = 1, duration = 140, strength = 40},
+                {dir = 1, duration = 130, strength = 55},
+                {dir = -1, duration = 50, strength = 2},
+                {dir = -1, duration = 120, strength = 0},
+                {dir = -1, duration = 100, strength = 0},
+                {dir = -1, duration = 250, strength = 20},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 140},
+                {dir = 1, duration = 150, strength = 420},
+                {dir = 1, duration = 400, strength = 1130},
+                {dir = 1, duration = 400, strength = 1600},
+            },
+        },
+        mpx = {
+            SidePattern = {
+                {dir = -1, duration = 1050, strength = 10},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 800, strength = 1200},
+                {dir = 1, duration = 400, strength = 720},
+            },
+        },
+    },
+    azami = {
+        ["9x19vsn"] = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 32},
+                {dir = -1, duration = 700, strength = 46},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 700, strength = 1155},
+                {dir = 1, duration = 400, strength = 740},
+            },
+        },
+    },
+    kapkan = {
+        ["9x19vsn"] = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 32},
+                {dir = -1, duration = 700, strength = 46},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 700, strength = 1155},
+                {dir = 1, duration = 400, strength = 740},
+            },
+        },
+    },
+    hibana = {
+        type89 = {
+            SidePattern = {
+                {dir = -1, duration = 1050, strength = 90},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 300, strength = 485},
+                {dir = 1, duration = 400, strength = 680},
+            },
+        },
+        bearing9 = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 14},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 110},
+                {dir = 1, duration = 380, strength = 860},
+                {dir = 1, duration = 400, strength = 890},
+            },
+        },
+    },
+    ace = {
+        ak12 = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 46},
+                {dir = -1, duration = 700, strength = 93},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 30, strength = 72},
+                {dir = 1, duration = 300, strength = 500},
+                {dir = 1, duration = 300, strength = 540},
+                {dir = 1, duration = 200, strength = 400},
+                {dir = 1, duration = 400, strength = 750},
+            },
+        },
+    },
+    thermite = {
+        ["556xi"] = {
+            SidePattern = {
+                {dir = 1, duration = 100, strength = 4},
+                {dir = 1, duration = 350, strength = 63},
+                {dir = 1, duration = 450, strength = 59},
+                {dir = 1, duration = 450, strength = 64},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 80, strength = 100},
+                {dir = 1, duration = 400, strength = 430},
+                {dir = 1, duration = 400, strength = 486},
+                {dir = 1, duration = 400, strength = 535},
+            },
+        },
+    },
+    iana = {
+        g36c = {
+            SidePattern = {
+                {dir = 1, duration = 775, strength = 38},
+                {dir = 1, duration = 300, strength = 10},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 750, strength = 1230},
+                {dir = 1, duration = 1000, strength = 1800},
+            },
+        },
+        arx200 = {
+            SidePattern = {
+                {dir = -1, duration = 500, strength = 23},
+                {dir = -1, duration = 500, strength = 40},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 60},
+                {dir = 1, duration = 400, strength = 530},
+                {dir = 1, duration = 400, strength = 570},
+            },
+        },
+    },
+    ram = {
+        r4c = {
+            SidePattern = {
+                {dir = -1, duration = 350, strength = 22},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 60, strength = 135},
+                {dir = 1, duration = 290, strength = 560},
+                {dir = 1, duration = 230, strength = 500},
+                {dir = 1, duration = 200, strength = 400},
+            },
+        },
+        lmge = {
+            SidePattern = {
+                {dir = -1, duration = 1500, strength = 100},
+                {dir = -1, duration = 200, strength = 33},
+                {dir = -1, duration = 500, strength = 52},
+                {dir = -1, duration = 500, strength = 57},
+                {dir = -1, duration = 500, strength = 36},
+                {dir = -1, duration = 500, strength = 51},
+                {dir = -1, duration = 500, strength = 68},
+                {dir = -1, duration = 500, strength = 40},
+                {dir = -1, duration = 500, strength = 60},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 715},
+                {dir = 1, duration = 400, strength = 790},
+                {dir = 1, duration = 400, strength = 820},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 820},
+                {dir = 1, duration = 400, strength = 820},
+                {dir = 1, duration = 400, strength = 820},
+                {dir = 1, duration = 400, strength = 820},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 810},
+                {dir = 1, duration = 400, strength = 810},
+            },
+        },
+    },
+    fuze = {
+        ak12 = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 46},
+                {dir = -1, duration = 700, strength = 93},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 30, strength = 72},
+                {dir = 1, duration = 300, strength = 500},
+                {dir = 1, duration = 300, strength = 540},
+                {dir = 1, duration = 200, strength = 400},
+                {dir = 1, duration = 400, strength = 750},
+            },
+        },
+        ["6p41"] = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 28},
+                {dir = -1, duration = 700, strength = 31},
+                {dir = -1, duration = 25, strength = 11},
+                {dir = -1, duration = 700, strength = 58},
+                {dir = -1, duration = 700, strength = 62},
+                {dir = -1, duration = 700, strength = 64},
+                {dir = -1, duration = 700, strength = 65},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 30, strength = 75},
+                {dir = 1, duration = 400, strength = 650},
+                {dir = 1, duration = 400, strength = 680},
+                {dir = 1, duration = 400, strength = 720},
+                {dir = 1, duration = 400, strength = 760},
+                {dir = 1, duration = 400, strength = 760},
+                {dir = 1, duration = 400, strength = 758},
+                {dir = 1, duration = 400, strength = 758},
+                {dir = 1, duration = 400, strength = 767},
+                {dir = 1, duration = 800, strength = 1480},
+            },
+        },
+    },
+    bandit = {
+        mp7 = {
+            SidePattern = {
+                {dir = 1, duration = 350, strength = 4},
+                {dir = 1, duration = 300, strength = 2},
+                {dir = 1, duration = 300, strength = 12},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 80, strength = 130},
+                {dir = 1, duration = 600, strength = 890},
+                {dir = 1, duration = 400, strength = 790},
+            },
+        },
+    },
+    mozzie = {
+        commando9 = {
+            SidePattern = {
+                {dir = -1, duration = 350, strength = 2},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 60, strength = 105},
+                {dir = 1, duration = 340, strength = 445},
+                {dir = 1, duration = 680, strength = 1000},
+            },
+        },
+        p10roni = {
+            SidePattern = {
+                {dir = 1, duration = 280, strength = 17},
+                {dir = 1, duration = 560, strength = 80},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 750, strength = 1280},
+            },
+        },
+    },
+    aruni = {
+        p10roni = {
+            SidePattern = {
+                {dir = 1, duration = 280, strength = 17},
+                {dir = 1, duration = 560, strength = 80},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 750, strength = 1280},
+            },
+        },
+    },
+    lesion = {
+        t5smg = {
+            SidePattern = {
+                {dir = 1, duration = 280, strength = 1},
+                {dir = 1, duration = 1020, strength = 6},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 280, strength = 475},
+                {dir = 1, duration = 500, strength = 955},
+                {dir = 1, duration = 500, strength = 1009},
+            },
+        },
+    },
+    kaid = {
+        auga3 = {
+            SidePattern = {
+                {dir = 1, duration = 280, strength = 3},
+                {dir = 1, duration = 1020, strength = 30},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 79},
+                {dir = 1, duration = 280, strength = 347},
+                {dir = 1, duration = 700, strength = 980},
+                {dir = 1, duration = 350, strength = 570},
+            },
+        },
+    },
+    fenrir = {
+        mp7 = {
+            SidePattern = {
+                {dir = 1, duration = 350, strength = 4},
+                {dir = 1, duration = 300, strength = 2},
+                {dir = 1, duration = 300, strength = 12},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 80, strength = 128},
+                {dir = 1, duration = 600, strength = 870},
+                {dir = 1, duration = 400, strength = 750},
+            },
+        },
+    },
+    osa = {
+        ["556xi"] = {
+            SidePattern = {
+                {dir = 1, duration = 100, strength = 4},
+                {dir = 1, duration = 350, strength = 63},
+                {dir = 1, duration = 450, strength = 59},
+                {dir = 1, duration = 450, strength = 64},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 80, strength = 100},
+                {dir = 1, duration = 400, strength = 435},
+                {dir = 1, duration = 400, strength = 489},
+                {dir = 1, duration = 400, strength = 525},
+            },
+        },
+        pdw9 = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 7},
+                {dir = -1, duration = 400, strength = 10},
+                {dir = -1, duration = 400, strength = 17},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 70},
+                {dir = 1, duration = 300, strength = 406},
+                {dir = 1, duration = 600, strength = 955},
+                {dir = 1, duration = 600, strength = 1080},
+                {dir = 1, duration = 300, strength = 525},
+            },
+        },
+    },
+    buck = {
+        c8sfw = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 1},
+                {dir = -1, duration = 440, strength = 17},
+                {dir = -1, duration = 440, strength = 42},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 280, strength = 380},
+                {dir = 1, duration = 470, strength = 720},
+                {dir = 1, duration = 470, strength = 800},
+            },
+        },
+    },
+    oryx = {
+        t5smg = {
+            SidePattern = {
+                {dir = 1, duration = 280, strength = 1},
+                {dir = 1, duration = 1020, strength = 6},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 280, strength = 475},
+                {dir = 1, duration = 500, strength = 955},
+                {dir = 1, duration = 500, strength = 1009},
+            },
+        },
+    },
+    grim = {
+        ["552commando"] = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 7},
+                {dir = -1, duration = 400, strength = 23},
+                {dir = -1, duration = 400, strength = 14},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 80, strength = 119},
+                {dir = 1, duration = 400, strength = 527},
+                {dir = 1, duration = 800, strength = 1170},
+            },
+        },
+    },
+    zero = {
+        sc3000k = {
+            SidePattern = {
+                {dir = -1, duration = 360, strength = 14},
+                {dir = -1, duration = 950, strength = 45},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 70, strength = 135},
+                {dir = 1, duration = 300, strength = 550},
+                {dir = 1, duration = 760, strength = 1630},
+            },
+        },
+        mp7 = {
+            SidePattern = {
+                {dir = 1, duration = 350, strength = 4},
+                {dir = 1, duration = 300, strength = 2},
+                {dir = 1, duration = 300, strength = 12},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 80, strength = 130},
+                {dir = 1, duration = 600, strength = 890},
+                {dir = 1, duration = 400, strength = 790},
+            },
+        },
+    },
+    melusi = {
+        mp5 = {
+            SidePattern = {
+                {dir = -1, duration = 650, strength = 24},
+                {dir = -1, duration = 775, strength = 57},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 150, strength = 240},
+                {dir = 1, duration = 270, strength = 400},
+                {dir = 1, duration = 800, strength = 1390},
+            },
+        },
+    },
+    striker = {
+        m4 = {
+            SidePattern = {
+                {dir = -1, duration = 100, strength = 4},
+                {dir = -1, duration = 900, strength = 51},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 75},
+                {dir = 1, duration = 500, strength = 800},
+                {dir = 1, duration = 300, strength = 520},
+                {dir = 1, duration = 300, strength = 580},
+            },
+        },
+        m249 = {
+            SidePattern = {
+                {dir = -1, duration = 1000, strength = 39},
+                {dir = -1, duration = 500, strength = 22},
+                {dir = -1, duration = 500, strength = 50},
+                {dir = -1, duration = 2000, strength = 117},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 25, strength = 30},
+                {dir = 1, duration = 450, strength = 480},
+                {dir = 1, duration = 700, strength = 830},
+                {dir = 1, duration = 250, strength = 315},
+                {dir = 1, duration = 450, strength = 605},
+                {dir = 1, duration = 700, strength = 940},
+                {dir = 1, duration = 700, strength = 940},
+                {dir = 1, duration = 700, strength = 940},
+                {dir = 1, duration = 700, strength = 975},
+            },
+        },
+    },
+    sentry = {
+        commando9 = {
+            SidePattern = {
+                {dir = -1, duration = 350, strength = 2},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 60, strength = 105},
+                {dir = 1, duration = 340, strength = 445},
+                {dir = 1, duration = 680, strength = 1000},
+            },
+        },
+        c75auto = {
+            SidePattern = {
+                {dir = 1, duration = 1000, strength = 2},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 660},
+                {dir = 1, duration = 400, strength = 660},
+            },
+        },
+    },
+    kali = {
+        spsmg9 = {
+            SidePattern = {
+                {dir = 1, duration = 100, strength = 1},
+                {dir = -1, duration = 50, strength = 1},
+                {dir = 1, duration = 50, strength = 1},
+                {dir = -1, duration = 50, strength = 0.66},
+                {dir = 1, duration = 50, strength = 2},
+                {dir = -1, duration = 50, strength = 3.5},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 70},
+                {dir = 1, duration = 400, strength = 530},
+            },
+        },
+        c75auto = {
+            SidePattern = {
+                {dir = 1, duration = 1000, strength = 2},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 660},
+                {dir = 1, duration = 400, strength = 660},
+            },
+        },
+    },
+    thorn = {
+        uzk50gi = {
+            SidePattern = {
+                {dir = 1, duration = 100, strength = 1.7},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 70},
+                {dir = 1, duration = 500, strength = 790},
+                {dir = 1, duration = 600, strength = 1060},
+            },
+        },
+        c75auto = {
+            SidePattern = {
+                {dir = 1, duration = 1000, strength = 2},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 660},
+                {dir = 1, duration = 400, strength = 660},
+            },
+        },
+    },
+    wamai = {
+        auga2 = {
+            SidePattern = {
+                {dir = 1, duration = 280, strength = 15},
+                {dir = 1, duration = 500, strength = 19},
+                {dir = 1, duration = 500, strength = 23},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 79},
+                {dir = 1, duration = 280, strength = 390},
+                {dir = 1, duration = 700, strength = 1180},
+                {dir = 1, duration = 350, strength = 770},
+            },
+        },
+        mp5k = {
+            SidePattern = {
+                {dir = -1, duration = 500, strength = 3},
+                {dir = -1, duration = 650, strength = 13},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 760, strength = 1100},
+                {dir = 1, duration = 760, strength = 1300},
+            },
+        },
+    },
+    iq = {
+        g8a1 = {
+            SidePattern = {
+                {dir = -1, duration = 450, strength = 27},
+                {dir = -1, duration = 50, strength = 20},
+                {dir = -1, duration = 700, strength = 63},
+                {dir = -1, duration = 700, strength = 63},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 30, strength = 56},
+                {dir = 1, duration = 300, strength = 450},
+                {dir = 1, duration = 350, strength = 560},
+                {dir = 1, duration = 760, strength = 1320},
+                {dir = 1, duration = 760, strength = 1460},
+            },
+        },
+        ["552commando"] = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 7},
+                {dir = -1, duration = 400, strength = 23},
+                {dir = -1, duration = 400, strength = 14},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 80, strength = 119},
+                {dir = 1, duration = 400, strength = 527},
+                {dir = 1, duration = 800, strength = 1170},
+            },
+        },
+        auga2 = {
+            SidePattern = {
+                {dir = 1, duration = 280, strength = 15},
+                {dir = 1, duration = 500, strength = 23},
+                {dir = 1, duration = 500, strength = 26},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 79},
+                {dir = 1, duration = 280, strength = 390},
+                {dir = 1, duration = 700, strength = 1180},
+                {dir = 1, duration = 350, strength = 770},
+            },
+        },
+    },
+    sledge = {
+        l85a2 = {
+            SidePattern = {
+                {dir = 1, duration = 500, strength = 37},
+                {dir = 1, duration = 400, strength = 14},
+                {dir = 1, duration = 500, strength = 35},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 50, strength = 80},
+                {dir = 1, duration = 550, strength = 620},
+                {dir = 1, duration = 400, strength = 540},
+                {dir = 1, duration = 400, strength = 540},
+            },
+        },
+    },
+    thatcher = {
+        l85a2 = {
+            SidePattern = {
+                {dir = 1, duration = 500, strength = 37},
+                {dir = 1, duration = 400, strength = 14},
+                {dir = 1, duration = 500, strength = 35},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 50, strength = 80},
+                {dir = 1, duration = 550, strength = 620},
+                {dir = 1, duration = 400, strength = 540},
+                {dir = 1, duration = 400, strength = 540},
+            },
+        },
+        ar33 = {
+            SidePattern = {
+                {dir = -1, duration = 500, strength = 17},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 35, strength = 70},
+                {dir = 1, duration = 350, strength = 440},
+                {dir = 1, duration = 300, strength = 460},
+                {dir = 1, duration = 600, strength = 780},
+            },
+        },
+    },
+    glaz = {
+        bearing9 = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 14},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 110},
+                {dir = 1, duration = 380, strength = 860},
+                {dir = 1, duration = 400, strength = 890},
+            },
+        },
+    },
+    blackbeard = {
+        mk17cqb = {
+            SidePattern = {
+                {dir = 1, duration = 400, strength = 19},
+                {dir = 1, duration = 400, strength = 40},
+                {dir = 1, duration = 400, strength = 40},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 400, strength = 310},
+            },
+        },
+    },
+    capitao = {
+        para308 = {
+            SidePattern = {
+                {dir = -1, duration = 1050, strength = 31},
+                {dir = -1, duration = 350, strength = 14},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 400, strength = 500},
+                {dir = 1, duration = 400, strength = 555},
+                {dir = 1, duration = 600, strength = 910},
+            },
+        },
+        m249 = {
+            SidePattern = {
+                {dir = -1, duration = 1000, strength = 39},
+                {dir = -1, duration = 500, strength = 22},
+                {dir = -1, duration = 500, strength = 50},
+                {dir = -1, duration = 2000, strength = 117},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 25, strength = 30},
+                {dir = 1, duration = 450, strength = 480},
+                {dir = 1, duration = 700, strength = 830},
+                {dir = 1, duration = 250, strength = 315},
+                {dir = 1, duration = 450, strength = 605},
+                {dir = 1, duration = 700, strength = 940},
+                {dir = 1, duration = 700, strength = 940},
+                {dir = 1, duration = 700, strength = 940},
+                {dir = 1, duration = 700, strength = 975},
+            },
+        },
+    },
+    jackal = {
+        c7e = {
+            SidePattern = {
+                {dir = -1, duration = 300, strength = 3},
+                {dir = -1, duration = 350, strength = 24},
+                {dir = -1, duration = 350, strength = 21},
+                {dir = -1, duration = 350, strength = 19},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 765},
+                {dir = 1, duration = 400, strength = 830},
+                {dir = 1, duration = 800, strength = 1970},
+            },
+        },
+        pdw9 = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 7},
+                {dir = -1, duration = 400, strength = 10},
+                {dir = -1, duration = 400, strength = 17},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 70},
+                {dir = 1, duration = 300, strength = 403},
+                {dir = 1, duration = 600, strength = 950},
+                {dir = 1, duration = 600, strength = 1082},
+                {dir = 1, duration = 300, strength = 525},
+            },
+        },
+    },
+    ying = {
+        t95lsw = {
+            SidePattern = {
+                {dir = -1, duration = 1300, strength = 15},
+                {dir = 1, duration = 1000, strength = 100},
+                {dir = 1, duration = 1000, strength = 100},
+                {dir = 1, duration = 1000, strength = 100},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 70},
+                {dir = 1, duration = 400, strength = 550},
+                {dir = 1, duration = 400, strength = 600},
+                {dir = 1, duration = 450, strength = 680},
+                {dir = 1, duration = 450, strength = 756},
+                {dir = 1, duration = 450, strength = 772},
+                {dir = 1, duration = 450, strength = 780},
+                {dir = 1, duration = 450, strength = 772},
+                {dir = 1, duration = 450, strength = 777},
+            },
+        },
+    },
+    lion = {
+        v308 = {
+            SidePattern = {
+                {dir = -1, duration = 1400, strength = 17},
+                {dir = -1, duration = 1400, strength = 21},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 70},
+                {dir = 1, duration = 430, strength = 520},
+                {dir = 1, duration = 800, strength = 1130},
+                {dir = 1, duration = 800, strength = 1200},
+            },
+        },
+    },
+    finka = {
+        spear308 = {
+            SidePattern = {
+                {dir = -1, duration = 300, strength = 1},
+                {dir = -1, duration = 175, strength = 28},
+                {dir = -1, duration = 175, strength = 2.5},
+                {dir = -1, duration = 350, strength = 12},
+                {dir = -1, duration = 350, strength = 19},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 725},
+                {dir = 1, duration = 400, strength = 830},
+                {dir = 1, duration = 800, strength = 1720},
+            },
+        },
+        ["6p41"] = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 28},
+                {dir = -1, duration = 700, strength = 31},
+                {dir = -1, duration = 25, strength = 11},
+                {dir = -1, duration = 700, strength = 58},
+                {dir = -1, duration = 700, strength = 62},
+                {dir = -1, duration = 700, strength = 64},
+                {dir = -1, duration = 700, strength = 65},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 30, strength = 75},
+                {dir = 1, duration = 400, strength = 650},
+                {dir = 1, duration = 400, strength = 680},
+                {dir = 1, duration = 400, strength = 720},
+                {dir = 1, duration = 400, strength = 760},
+                {dir = 1, duration = 400, strength = 760},
+                {dir = 1, duration = 400, strength = 758},
+                {dir = 1, duration = 400, strength = 758},
+                {dir = 1, duration = 400, strength = 767},
+                {dir = 1, duration = 800, strength = 1480},
+            },
+        },
+    },
+    maverick = {
+        m4 = {
+            SidePattern = {
+                {dir = -1, duration = 100, strength = 4},
+                {dir = -1, duration = 900, strength = 51},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 75},
+                {dir = 1, duration = 500, strength = 800},
+                {dir = 1, duration = 300, strength = 520},
+                {dir = 1, duration = 300, strength = 580},
+            },
+        },
+    },
+    nomad = {
+        ak74m = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 35},
+                {dir = -1, duration = 700, strength = 34},
+                {dir = -1, duration = 700, strength = 35},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 30, strength = 64},
+                {dir = 1, duration = 300, strength = 290},
+                {dir = 1, duration = 300, strength = 300},
+                {dir = 1, duration = 300, strength = 325},
+                {dir = 1, duration = 300, strength = 325},
+                {dir = 1, duration = 300, strength = 360},
+                {dir = 1, duration = 300, strength = 380},
+            },
+        },
+        arx200 = {
+            SidePattern = {
+                {dir = -1, duration = 500, strength = 23},
+                {dir = -1, duration = 500, strength = 40},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 60},
+                {dir = 1, duration = 400, strength = 530},
+                {dir = 1, duration = 400, strength = 570},
+            },
+        },
+    },
+    gridlock = {
+        f90 = {
+            SidePattern = {
+                {dir = -1, duration = 500, strength = 20},
+                {dir = -1, duration = 500, strength = 30},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 70},
+                {dir = 1, duration = 400, strength = 600},
+                {dir = 1, duration = 400, strength = 670},
+                {dir = 1, duration = 400, strength = 700},
+            },
+        },
+        ["m249saw"] = {
+            SidePattern = {
+                {dir = 1, duration = 400, strength = 30},
+                {dir = 1, duration = 400, strength = 42},
+                {dir = 1, duration = 400, strength = 36},
+                {dir = 1, duration = 400, strength = 66},
+                {dir = 1, duration = 200, strength = 63},
+                {dir = 1, duration = 400, strength = 63},
+                {dir = 1, duration = 400, strength = 63},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 70},
+                {dir = 1, duration = 400, strength = 515},
+                {dir = 1, duration = 400, strength = 580},
+                {dir = 1, duration = 400, strength = 610},
+                {dir = 1, duration = 400, strength = 640},
+                {dir = 1, duration = 400, strength = 665},
+                {dir = 1, duration = 400, strength = 675},
+            },
+        },
+    },
+    nokk = {
+        fmg9 = {
+            SidePattern = {
+                {dir = 1, duration = 500, strength = 2},
+                {dir = 1, duration = 650, strength = 10},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 760, strength = 1100},
+                {dir = 1, duration = 760, strength = 1300},
+            },
+        },
+    },
+    amaru = {
+        g8a1 = {
+            SidePattern = {
+                {dir = -1, duration = 450, strength = 27},
+                {dir = -1, duration = 50, strength = 20},
+                {dir = -1, duration = 700, strength = 63},
+                {dir = -1, duration = 700, strength = 63},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 30, strength = 56},
+                {dir = 1, duration = 300, strength = 450},
+                {dir = 1, duration = 350, strength = 560},
+                {dir = 1, duration = 760, strength = 1320},
+                {dir = 1, duration = 760, strength = 1460},
+            },
+        },
+        smg11 = {
+            SidePattern = {
+                {dir = 1, duration = 650, strength = 16},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 150},
+                {dir = 1, duration = 150, strength = 340},
+            },
+        },
+    },
+    flores = {
+       t95lsw = {
+            SidePattern = {
+                {dir = -1, duration = 1300, strength = 15},
+                {dir = 1, duration = 1000, strength = 100},
+                {dir = 1, duration = 1000, strength = 100},
+                {dir = 1, duration = 1000, strength = 100},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 70},
+                {dir = 1, duration = 400, strength = 550},
+                {dir = 1, duration = 400, strength = 600},
+                {dir = 1, duration = 450, strength = 680},
+                {dir = 1, duration = 450, strength = 756},
+                {dir = 1, duration = 450, strength = 772},
+                {dir = 1, duration = 450, strength = 780},
+                {dir = 1, duration = 450, strength = 772},
+                {dir = 1, duration = 450, strength = 777},
+            },
+        },
+        ar33 = {
+            SidePattern = {
+                {dir = -1, duration = 500, strength = 17},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 35, strength = 70},
+                {dir = 1, duration = 350, strength = 440},
+                {dir = 1, duration = 300, strength = 460},
+                {dir = 1, duration = 600, strength = 780},
+            },
+        },
+    },
+    sens = {
+        pof9 = {
+            SidePattern = {
+                {dir = 1, duration = 500, strength = 18},
+                {dir = -1, duration = 500, strength = 20},
+                {dir = -1, duration = 500, strength = 20},
+                {dir = -1, duration = 500, strength = 20},
+                {dir = -1, duration = 500, strength = 20},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 35, strength = 70},
+                {dir = 1, duration = 400, strength = 545},
+                {dir = 1, duration = 400, strength = 570},
+                {dir = 1, duration = 400, strength = 580},
+                {dir = 1, duration = 400, strength = 675},
+                {dir = 1, duration = 400, strength = 610},
+            },
+        },
+    },
+    deimos = {
+        ak74m = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 35},
+                {dir = -1, duration = 700, strength = 34},
+                {dir = -1, duration = 700, strength = 35},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 30, strength = 64},
+                {dir = 1, duration = 300, strength = 290},
+                {dir = 1, duration = 300, strength = 300},
+                {dir = 1, duration = 300, strength = 325},
+                {dir = 1, duration = 300, strength = 325},
+                {dir = 1, duration = 300, strength = 360},
+                {dir = 1, duration = 300, strength = 380},
+            },
+        },
+    },
+    rauora = {
+        m249 = {
+            SidePattern = {
+                {dir = -1, duration = 1000, strength = 39},
+                {dir = -1, duration = 500, strength = 22},
+                {dir = -1, duration = 500, strength = 50},
+                {dir = -1, duration = 2000, strength = 117},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 25, strength = 30},
+                {dir = 1, duration = 450, strength = 480},
+                {dir = 1, duration = 700, strength = 830},
+                {dir = 1, duration = 250, strength = 315},
+                {dir = 1, duration = 450, strength = 605},
+                {dir = 1, duration = 700, strength = 940},
+                {dir = 1, duration = 700, strength = 940},
+                {dir = 1, duration = 700, strength = 940},
+                {dir = 1, duration = 700, strength = 975},
+            },
+        },
+        reapermk2 = {
+            SidePattern = {
+                {dir = -1, duration = 650, strength = 62},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 100},
+                {dir = 1, duration = 400, strength = 670},
+                {dir = 1, duration = 400, strength = 845},
+                {dir = 1, duration = 400, strength = 840},
+            },
+        },
+    },
+    castle = {
+        ump45 = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 15},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 30, strength = 50},
+                {dir = 1, duration = 1200, strength = 1100},
+            },
+        },
+    },
+    pulse = {
+        ump45 = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 17},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 30, strength = 50},
+                {dir = 1, duration = 1200, strength = 1100},
+            },
+        },
+        reapermk2 = {
+            SidePattern = {
+                {dir = -1, duration = 650, strength = 62},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 100},
+                {dir = 1, duration = 400, strength = 670},
+                {dir = 1, duration = 400, strength = 845},
+                {dir = 1, duration = 400, strength = 840},
+            },
+        },
+    },
+    rook = {
+        mp5 = {
+            SidePattern = {
+                {dir = -1, duration = 650, strength = 25},
+                {dir = -1, duration = 775, strength = 58},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 150, strength = 240},
+                {dir = 1, duration = 270, strength = 400},
+                {dir = 1, duration = 800, strength = 1390},
+            },
+        },
+        p90 = {
+            SidePattern = {
+                {dir = -1, duration = 760, strength = 2.1},
+                {dir = 1, duration = 950, strength = 45},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 760, strength = 1100},
+                {dir = 1, duration = 760, strength = 1300},
+            },
+        },
+    },
+    tachanka = {
+        dp27 = {
+            SidePattern = {
+                {dir = 1, duration = 650, strength = 39},
+                {dir = 1, duration = 300, strength = 1},
+                {dir = 1, duration = 300, strength = 75},
+                {dir = 1, duration = 775, strength = 120},
+                {dir = 1, duration = 775, strength = 120},
+                {dir = 1, duration = 775, strength = 140},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 500, strength = 300},
+                {dir = 1, duration = 500, strength = 250},
+            },
+        },
+        ["9x19vsn"] = {
+            SidePattern = {
+                {dir = -1, duration = 700, strength = 32},
+                {dir = -1, duration = 700, strength = 46},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 700, strength = 1155},
+                {dir = 1, duration = 400, strength = 740},
+            },
+        },
+        bearing9 = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 14},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 110},
+                {dir = 1, duration = 380, strength = 860},
+                {dir = 1, duration = 400, strength = 890},
+            },
+        },
+    },
+    jager = {
+        ["416ccarbine"] = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 12},
+                {dir = -1, duration = 700, strength = 33},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 30, strength = 80},
+                {dir = 1, duration = 1200, strength = 2200},
+            },
+        },
+    },
+    frost = {
+        ["9mmc1"] = {
+            SidePattern = {
+                {dir = 1, duration = 1050, strength = 22},
+                {dir = 1, duration = 1050, strength = 1},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 50},
+                {dir = 1, duration = 1100, strength = 1010},
+                {dir = 1, duration = 1100, strength = 1130},
+            },
+        },
+    },
+    caveira = {
+        m12 = {
+            SidePattern = {
+                {dir = -1, duration = 1050, strength = 28},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 44},
+                {dir = 1, duration = 1100, strength = 880},
+            },
+        },
+    },
+    echo = {
+        mp5sd = {
+            SidePattern = {
+                {dir = -1, duration = 250, strength = 12},
+                {dir = -1, duration = 350, strength = 23},
+                {dir = -1, duration = 775, strength = 57},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 150, strength = 240},
+                {dir = 1, duration = 270, strength = 340},
+                {dir = 1, duration = 800, strength = 1330},
+            },
+        },
+        bearing9 = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 14},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 110},
+                {dir = 1, duration = 380, strength = 860},
+                {dir = 1, duration = 400, strength = 890},
+            },
+        },
+    },
+    ela = {
+        scorpionevo3a1 = {
+            SidePattern = {
+                {dir = 1, duration = 280, strength = 32},
+                {dir = 1, duration = 400, strength = 70},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 50, strength = 150},
+                {dir = 1, duration = 230, strength = 405},
+                {dir = 1, duration = 70, strength = 210},
+                {dir = 1, duration = 1600, strength = 4000},
+            },
+        },
+    },
+    maestro = {
+        alda556 = {
+            SidePattern = {
+                {dir = -1, duration = 775, strength = 22},
+                {dir = -1, duration = 775, strength = 12},
+                {dir = -1, duration = 775, strength = 17},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 300, strength = 530},
+                {dir = 1, duration = 450, strength = 950},
+                {dir = 1, duration = 750, strength = 1650},
+                {dir = 1, duration = 750, strength = 1750},
+                {dir = 1, duration = 750, strength = 1760},
+            },
+        },
+    },
+    alibi = {
+        mx4storm = {
+            SidePattern = {
+                {dir = 1, duration = 400, strength = 14},
+                {dir = 1, duration = 200, strength = 33},
+                {dir = 1, duration = 300, strength = 45},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 50, strength = 110},
+                {dir = 1, duration = 300, strength = 530},
+                {dir = 1, duration = 300, strength = 610},
+                {dir = 1, duration = 300, strength = 610},
+            },
+        },
+    },
+    clash = {
+        spsmg9 = {
+            SidePattern = {
+                {dir = 1, duration = 100, strength = 1},
+                {dir = -1, duration = 50, strength = 1},
+                {dir = 1, duration = 50, strength = 1},
+                {dir = -1, duration = 50, strength = 0.66},
+                {dir = 1, duration = 50, strength = 2},
+                {dir = -1, duration = 50, strength = 3.5},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 70},
+                {dir = 1, duration = 400, strength = 530},
+            },
+        },
+    },
+    thunderbird = {
+        spear308 = {
+            SidePattern = {
+                {dir = -1, duration = 300, strength = 1},
+                {dir = -1, duration = 175, strength = 28},
+                {dir = -1, duration = 175, strength = 2.5},
+                {dir = -1, duration = 350, strength = 12},
+                {dir = -1, duration = 350, strength = 19},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 80},
+                {dir = 1, duration = 400, strength = 725},
+                {dir = 1, duration = 400, strength = 830},
+                {dir = 1, duration = 800, strength = 1720},
+            },
+        },
+        bearing9 = {
+            SidePattern = {
+                {dir = -1, duration = 400, strength = 14},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 110},
+                {dir = 1, duration = 380, strength = 860},
+                {dir = 1, duration = 400, strength = 890},
+            },
+        },
+    },
+    solis = {
+        p90 = {
+            SidePattern = {
+                {dir = -1, duration = 760, strength = 2.1},
+                {dir = 1, duration = 950, strength = 45},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 760, strength = 1100},
+                {dir = 1, duration = 760, strength = 1300},
+            },
+        },
+        smg11 = {
+            SidePattern = {
+                {dir = 1, duration = 650, strength = 16},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 150},
+                {dir = 1, duration = 150, strength = 340},
+            },
+        },
+    },
+    tubarao = {
+        mpx = {
+            SidePattern = {
+                {dir = -1, duration = 1050, strength = 10},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 800, strength = 1200},
+                {dir = 1, duration = 400, strength = 720},
+            },
+        },
+    },
+    skopos = {
+        pcx33 = {
+            SidePattern = {
+                {dir = -1, duration = 550, strength = 25},
+                {dir = -1, duration = 1050, strength = 15},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 400, strength = 510},
+                {dir = 1, duration = 400, strength = 560},
+                {dir = 1, duration = 400, strength = 600},
+            },
+        },
+    },
+    denari = {
+        scorpionevo3a1 = {
+            SidePattern = {
+                {dir = 1, duration = 280, strength = 32},
+                {dir = 1, duration = 400, strength = 70},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 50, strength = 150},
+                {dir = 1, duration = 230, strength = 405},
+                {dir = 1, duration = 70, strength = 210},
+                {dir = 1, duration = 1600, strength = 4000},
+            },
+        },
+        fmg9 = {
+            SidePattern = {
+                {dir = 1, duration = 500, strength = 2},
+                {dir = 1, duration = 650, strength = 10},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 760, strength = 1100},
+                {dir = 1, duration = 760, strength = 1300},
+            },
+        },
+    },
+    ["solid snake"] = {
+        f2 = {
+            SidePattern = {
+                {dir = -1, duration = 350, strength = 20},
+            },
+            VerticalPattern = {
+                {dir = 1, duration = 40, strength = 132},
+                {dir = 1, duration = 150, strength = 300},
+                {dir = 1, duration = 1000, strength = 2500},
+            },
+        },
+    },
+}
+
+CurrentScope    = "2.5x"
+CurrentOperator = "ash"
+CurrentWeapon   = "r4c"
+
+VerticalDPIScaleAbove800 = 1
+VerticalDPIScaleBelow800 = 1
+HorizontalDPIScaleAbove800 = 1
+HorizontalDPIScaleBelow800 = 1
+
+HorizontalADSScaleAbove36 = 1
+HorizontalADSScaleBelow36 = 1
+VerticalADSScaleAbove36 = 1
+VerticalADSScaleBelow36 = 1
+
+FOVScaleTable = {
+    [60] = 0.9045, [61] = 0.911, [62] = 0.919, [63] = 0.9273, [64] = 0.928,
+    [65] = 0.929, [66] = 0.930, [67] = 0.932, [68] = 0.935, [69] = 0.938,
+    [70] = 0.941, [71] = 0.944, [72] = 0.948, [73] = 0.954, [74] = 0.959,
+    [75] = 0.964, [76] = 0.968, [77] = 0.973, [78] = 0.978, [79] = 0.983,
+    [80] = 0.988, [81] = 0.994, [82] = 1, [83] = 1.005, [84] = 1.012,
+    [85] = 1.018, [86] = 1.024, [87] = 1.029, [88] = 1.034, [89] = 1.039,
+    [90] = 1.042,
+}
+
+IndividualNonAdvancedADSScales = {
+    [1] = 36.2, [2] = 18.1, [3] = 12, [4] = 9.2, [5] = 7.3, [6] = 6.03,
+    [7] = 5.17, [8] = 4.53, [9] = 4.02, [10] = 3.62, [11] = 3.29, [12] = 3.02,
+    [13] = 2.78, [14] = 2.59, [15] = 2.41, [16] = 2.26, [17] = 2.13, [18] = 2.01,
+    [19] = 1.91, [20] = 1.81, [21] = 1.72, [22] = 1.65, [23] = 1.57, [24] = 1.51,
+    [25] = 1.45, [26] = 1.39, [27] = 1.34, [28] = 1.29, [29] = 1.25, [30] = 1.21,
+    [31] = 1.17, [32] = 1.13, [33] = 1.1, [34] = 1.06, [35] = 1.03, [36] = 1,
+    [37] = 0.98, [38] = 0.95, [39] = 0.93, [40] = 0.91, [41] = 0.88, [42] = 0.86,
+    [43] = 0.84, [44] = 0.82, [45] = 0.8, [46] = 0.79, [47] = 0.77, [48] = 0.75,
+    [49] = 0.74, [50] = 0.72, [51] = 0.71, [52] = 0.7, [53] = 0.68, [54] = 0.67,
+    [55] = 0.66, [56] = 0.65, [57] = 0.64, [58] = 0.62, [59] = 0.61, [60] = 0.6,
+    [61] = 0.59, [62] = 0.58, [63] = 0.57, [64] = 0.57, [65] = 0.56, [66] = 0.55,
+    [67] = 0.54, [68] = 0.53, [69] = 0.52, [70] = 0.52, [71] = 0.51, [72] = 0.5,
+    [73] = 0.5, [74] = 0.49, [75] = 0.48, [76] = 0.48, [77] = 0.47, [78] = 0.46,
+    [79] = 0.46, [80] = 0.45, [81] = 0.45, [82] = 0.44, [83] = 0.44, [84] = 0.43,
+    [85] = 0.43, [86] = 0.42, [87] = 0.42, [88] = 0.41, [89] = 0.41, [90] = 0.4,
+    [91] = 0.4, [92] = 0.39, [93] = 0.39, [94] = 0.39, [95] = 0.38, [96] = 0.38,
+    [97] = 0.37, [98] = 0.37, [99] = 0.37, [100] = 0.36, [101] = 0.36, [102] = 0.35,
+    [103] = 0.35, [104] = 0.35, [105] = 0.34, [106] = 0.34, [107] = 0.34, [108] = 0.33,
+    [109] = 0.33, [110] = 0.33, [111] = 0.33, [112] = 0.32, [113] = 0.32, [114] = 0.32,
+    [115] = 0.31, [116] = 0.31, [117] = 0.31, [118] = 0.31, [119] = 0.3, [120] = 0.3,
+    [121] = 0.3, [122] = 0.3, [123] = 0.29, [124] = 0.29, [125] = 0.29, [126] = 0.29,
+    [127] = 0.29, [128] = 0.28, [129] = 0.28, [130] = 0.28, [131] = 0.28, [132] = 0.27,
+    [133] = 0.27, [134] = 0.27, [135] = 0.27, [136] = 0.27, [137] = 0.26, [138] = 0.26,
+    [139] = 0.26, [140] = 0.26, [141] = 0.26, [142] = 0.26, [143] = 0.25, [144] = 0.25,
+    [145] = 0.25, [146] = 0.25, [147] = 0.25, [148] = 0.24, [149] = 0.24, [150] = 0.24,
+    [151] = 0.24, [152] = 0.24, [153] = 0.24, [154] = 0.24, [155] = 0.23, [156] = 0.23,
+    [157] = 0.23, [158] = 0.23, [159] = 0.23, [160] = 0.23, [161] = 0.22, [162] = 0.22,
+    [163] = 0.22, [164] = 0.22, [165] = 0.22, [166] = 0.22, [167] = 0.22, [168] = 0.22,
+    [169] = 0.21, [170] = 0.21, [171] = 0.21, [172] = 0.21, [173] = 0.21, [174] = 0.21,
+    [175] = 0.21, [176] = 0.21, [177] = 0.2, [178] = 0.2, [179] = 0.2, [180] = 0.2,
+    [181] = 0.2, [182] = 0.2, [183] = 0.2, [184] = 0.2, [185] = 0.2, [186] = 0.2,
+    [187] = 0.19, [188] = 0.19, [189] = 0.19, [190] = 0.19, [191] = 0.19, [192] = 0.19,
+    [193] = 0.19, [194] = 0.19, [195] = 0.19, [196] = 0.18, [197] = 0.18, [198] = 0.18,
+    [199] = 0.18, [200] = 0.18,
+}
+
+Individual1xHorizontalADSScales = {
+    [1] = 26.000,  [2] = 13.500,  [3] = 9.050,  [4] = 6.787,  [5] = 5.430,  [6] = 4.525,
+    [7] = 3.879,  [8] = 3.394,  [9] = 3.017,  [10] = 2.715,  [11] = 2.555,  [12] = 2.417,
+    [13] = 2.297,  [14] = 2.191,  [15] = 2.097,  [16] = 2.012,  [17] = 1.936,  [18] = 1.867,
+    [19] = 1.803,  [20] = 1.745,  [21] = 1.692,  [22] = 1.643,  [23] = 1.597,  [24] = 1.554,
+    [25] = 1.514,  [26] = 1.477,  [27] = 1.442,  [28] = 1.408,  [29] = 1.377,  [30] = 1.348,
+    [31] = 1.320,  [32] = 1.294,  [33] = 1.268,  [34] = 1.245,  [35] = 1.222,  [36] = 1.200,
+    [37] = 1.172,  [38] = 1.146,  [39] = 1.120,  [40] = 1.096,  [41] = 1.073,  [42] = 1.051,
+    [43] = 1.030,  [44] = 1.010,  [45] = 0.991,  [46] = 0.972,  [47] = 0.954,  [48] = 0.937,
+    [49] = 0.921,  [50] = 0.905,  [51] = 0.894,  [52] = 0.884,  [53] = 0.874,  [54] = 0.865,
+    [55] = 0.855,  [56] = 0.846,  [57] = 0.837,  [58] = 0.829,  [59] = 0.820,  [60] = 0.812,
+    [61] = 0.804,  [62] = 0.797,  [63] = 0.789,  [64] = 0.782,  [65] = 0.775,  [66] = 0.768,
+    [67] = 0.761,  [68] = 0.754,  [69] = 0.748,  [70] = 0.741,  [71] = 0.735,  [72] = 0.729,
+    [73] = 0.723,  [74] = 0.717,  [75] = 0.712,  [76] = 0.706,  [77] = 0.701,  [78] = 0.695,
+    [79] = 0.690,  [80] = 0.685,  [81] = 0.680,  [82] = 0.675,  [83] = 0.670,  [84] = 0.665,
+    [85] = 0.661,  [86] = 0.656,  [87] = 0.652,  [88] = 0.647,  [89] = 0.643,  [90] = 0.639,
+    [91] = 0.635,  [92] = 0.630,  [93] = 0.626,  [94] = 0.622,  [95] = 0.619,  [96] = 0.615,
+    [97] = 0.611,  [98] = 0.607,  [99] = 0.604,  [100] = 0.600,  [101] = 0.596,  [102] = 0.592,
+    [103] = 0.588,  [104] = 0.584,  [105] = 0.580,  [106] = 0.576,  [107] = 0.572,  [108] = 0.568,
+    [109] = 0.564,  [110] = 0.561,  [111] = 0.557,  [112] = 0.554,  [113] = 0.550,  [114] = 0.547,
+    [115] = 0.543,  [116] = 0.540,  [117] = 0.537,  [118] = 0.534,  [119] = 0.530,  [120] = 0.527,
+    [121] = 0.524,  [122] = 0.521,  [123] = 0.518,  [124] = 0.515,  [125] = 0.512,  [126] = 0.509,
+    [127] = 0.506,  [128] = 0.504,  [129] = 0.501,  [130] = 0.498,  [131] = 0.495,  [132] = 0.493,
+    [133] = 0.490,  [134] = 0.487,  [135] = 0.485,  [136] = 0.482,  [137] = 0.480,  [138] = 0.477,
+    [139] = 0.475,  [140] = 0.473,  [141] = 0.470,  [142] = 0.468,  [143] = 0.466,  [144] = 0.463,
+    [145] = 0.461,  [146] = 0.459,  [147] = 0.456,  [148] = 0.454,  [149] = 0.452,  [150] = 0.450,
+    [151] = 0.448,  [152] = 0.446,  [153] = 0.444,  [154] = 0.442,  [155] = 0.440,  [156] = 0.438,
+    [157] = 0.436,  [158] = 0.434,  [159] = 0.433,  [160] = 0.431,  [161] = 0.429,  [162] = 0.427,
+    [163] = 0.425,  [164] = 0.423,  [165] = 0.422,  [166] = 0.420,  [167] = 0.418,  [168] = 0.417,
+    [169] = 0.415,  [170] = 0.413,  [171] = 0.412,  [172] = 0.410,  [173] = 0.408,  [174] = 0.407,
+    [175] = 0.405,  [176] = 0.404,  [177] = 0.402,  [178] = 0.401,  [179] = 0.399,  [180] = 0.397,
+    [181] = 0.396,  [182] = 0.395,  [183] = 0.393,  [184] = 0.392,  [185] = 0.390,  [186] = 0.389,
+    [187] = 0.387,  [188] = 0.386,  [189] = 0.385,  [190] = 0.383,  [191] = 0.382,  [192] = 0.380,
+    [193] = 0.379,  [194] = 0.378,  [195] = 0.376,  [196] = 0.375,  [197] = 0.374,  [198] = 0.373,
+    [199] = 0.371,  [200] = 0.370,
+}
+
+Individual1xVerticalADSScales = {
+    [1] = 27.150, [2] = 13.575, [3] = 9.050, [4] = 6.787, [5] = 5.430, [6] = 4.525,
+    [7] = 3.879, [8] = 3.394, [9] = 3.017, [10] = 2.715, [11] = 2.468, [12] = 2.262,
+    [13] = 2.088, [14] = 1.939, [15] = 1.810, [16] = 1.697, [17] = 1.597, [18] = 1.508,
+    [19] = 1.429, [20] = 1.357, [21] = 1.293, [22] = 1.234, [23] = 1.180, [24] = 1.131,
+    [25] = 1.086, [26] = 1.044, [27] = 1.006, [28] = 0.970, [29] = 0.936, [30] = 0.905,
+    [31] = 0.876, [32] = 0.848, [33] = 0.823, [34] = 0.799, [35] = 0.776, [36] = 0.754,
+    [37] = 0.734, [38] = 0.714, [39] = 0.696, [40] = 0.679, [41] = 0.662, [42] = 0.646,
+    [43] = 0.631, [44] = 0.617, [45] = 0.603, [46] = 0.590, [47] = 0.578, [48] = 0.566,
+    [49] = 0.554, [50] = 0.543, [51] = 0.532, [52] = 0.522, [53] = 0.512, [54] = 0.503,
+    [55] = 0.494, [56] = 0.485, [57] = 0.476, [58] = 0.468, [59] = 0.460, [60] = 0.452,
+    [61] = 0.445, [62] = 0.438, [63] = 0.431, [64] = 0.424, [65] = 0.418, [66] = 0.411,
+    [67] = 0.405, [68] = 0.399, [69] = 0.393, [70] = 0.388, [71] = 0.382, [72] = 0.377,
+    [73] = 0.372, [74] = 0.367, [75] = 0.362, [76] = 0.357, [77] = 0.353, [78] = 0.348,
+    [79] = 0.344, [80] = 0.339, [81] = 0.335, [82] = 0.331, [83] = 0.327, [84] = 0.323,
+    [85] = 0.319, [86] = 0.316, [87] = 0.312, [88] = 0.309, [89] = 0.305, [90] = 0.302,
+    [91] = 0.298, [92] = 0.295, [93] = 0.292, [94] = 0.289, [95] = 0.286, [96] = 0.283,
+    [97] = 0.280, [98] = 0.277, [99] = 0.274, [100] = 0.272, [101] = 0.269, [102] = 0.266,
+    [103] = 0.264, [104] = 0.261, [105] = 0.259, [106] = 0.256, [107] = 0.254, [108] = 0.252,
+    [109] = 0.249, [110] = 0.247, [111] = 0.245, [112] = 0.243, [113] = 0.241, [114] = 0.238,
+    [115] = 0.236, [116] = 0.234, [117] = 0.232, [118] = 0.230, [119] = 0.228, [120] = 0.226,
+    [121] = 0.224, [122] = 0.223, [123] = 0.221, [124] = 0.219, [125] = 0.217, [126] = 0.215,
+    [127] = 0.214, [128] = 0.212, [129] = 0.210, [130] = 0.209, [131] = 0.207, [132] = 0.206,
+    [133] = 0.204, [134] = 0.203, [135] = 0.201, [136] = 0.200, [137] = 0.198, [138] = 0.197,
+    [139] = 0.195, [140] = 0.194, [141] = 0.193, [142] = 0.191, [143] = 0.190, [144] = 0.189,
+    [145] = 0.187, [146] = 0.186, [147] = 0.185, [148] = 0.183, [149] = 0.182, [150] = 0.181,
+    [151] = 0.180, [152] = 0.179, [153] = 0.177, [154] = 0.176, [155] = 0.175, [156] = 0.174,
+    [157] = 0.173, [158] = 0.172, [159] = 0.171, [160] = 0.170, [161] = 0.169, [162] = 0.168,
+    [163] = 0.167, [164] = 0.166, [165] = 0.165, [166] = 0.164, [167] = 0.163, [168] = 0.162,
+    [169] = 0.161, [170] = 0.160, [171] = 0.159, [172] = 0.158, [173] = 0.157, [174] = 0.156,
+    [175] = 0.155, [176] = 0.154, [177] = 0.153, [178] = 0.153, [179] = 0.152, [180] = 0.151,
+    [181] = 0.150, [182] = 0.149, [183] = 0.148, [184] = 0.148, [185] = 0.147, [186] = 0.146,
+    [187] = 0.145, [188] = 0.144, [189] = 0.144, [190] = 0.143, [191] = 0.142, [192] = 0.141,
+    [193] = 0.141, [194] = 0.140, [195] = 0.139, [196] = 0.139, [197] = 0.138, [198] = 0.137,
+    [199] = 0.136, [200] = 0.136,
+}
+
+Individual2_5xHorizontalADSScales = {
+    [1] = 29.800, [2] = 16.700, [3] = 14.100, [4] = 8.000, [5] = 5.200, [6] = 5.100,
+    [7] = 5.020, [8] = 4.980, [9] = 4.880, [10] = 4.760, [11] = 4.472, [12] = 4.154,
+    [13] = 3.860, [14] = 3.586, [15] = 3.331, [16] = 3.095, [17] = 2.875, [18] = 2.671,
+    [19] = 2.482, [20] = 2.280, [21] = 2.227, [22] = 2.151, [23] = 2.077, [24] = 2.006,
+    [25] = 1.937, [26] = 1.871, [27] = 1.807, [28] = 1.745, [29] = 1.686, [30] = 1.610,
+    [31] = 1.608, [32] = 1.588, [33] = 1.568, [34] = 1.548, [35] = 1.529, [36] = 1.510,
+    [37] = 1.491, [38] = 1.472, [39] = 1.454, [40] = 1.420, [41] = 1.431, [42] = 1.426,
+    [43] = 1.421, [44] = 1.415, [45] = 1.410, [46] = 1.405, [47] = 1.400, [48] = 1.395,
+    [49] = 1.390, [50] = 1.370, [51] = 1.362, [52] = 1.340, [53] = 1.318, [54] = 1.296,
+    [55] = 1.275, [56] = 1.254, [57] = 1.233, [58] = 1.213, [59] = 1.193, [60] = 1.160,
+    [61] = 1.154, [62] = 1.136, [63] = 1.118, [64] = 1.100, [65] = 1.083, [66] = 1.054,
+    [67] = 1.061, [68] = 1.056, [69] = 1.051, [70] = 1.035, [71] = 1.039, [72] = 1.032,
+    [73] = 1.025, [74] = 1.018, [75] = 1.011, [76] = 1.004, [77] = 0.997, [78] = 0.990,
+    [79] = 0.983, [80] = 0.965, [81] = 0.968, [82] = 0.960, [83] = 0.952, [84] = 0.945,
+    [85] = 0.937, [86] = 0.930, [87] = 0.922, [88] = 0.915, [89] = 0.907, [90] = 0.890,
+    [91] = 0.897, [92] = 0.895, [93] = 0.892, [94] = 0.889, [95] = 0.887, [96] = 0.884,
+    [97] = 0.882, [98] = 0.880, [99] = 0.878, [100] = 0.864, [101] = 0.862, [102] = 0.861,
+    [103] = 0.859, [104] = 0.857, [105] = 0.856, [106] = 0.854, [107] = 0.853, [108] = 0.852,
+    [109] = 0.851, [110] = 0.830, [111] = 0.829, [112] = 0.828, [113] = 0.827, [114] = 0.826,
+    [115] = 0.825, [116] = 0.824, [117] = 0.823, [118] = 0.821, [119] = 0.819, [120] = 0.808,
+    [121] = 0.816, [122] = 0.814, [123] = 0.812, [124] = 0.811, [125] = 0.809, [126] = 0.808,
+    [127] = 0.806, [128] = 0.805, [129] = 0.803, [130] = 0.793, [131] = 0.801, [132] = 0.800,
+    [133] = 0.799, [134] = 0.797, [135] = 0.796, [136] = 0.795, [137] = 0.794, [138] = 0.793,
+    [139] = 0.792, [140] = 0.782, [141] = 0.789, [142] = 0.788, [143] = 0.787, [144] = 0.785,
+    [145] = 0.784, [146] = 0.783, [147] = 0.782, [148] = 0.780, [149] = 0.779, [150] = 0.769,
+    [151] = 0.770, [152] = 0.763, [153] = 0.756, [154] = 0.749, [155] = 0.742, [156] = 0.735,
+    [157] = 0.728, [158] = 0.721, [159] = 0.715, [160] = 0.700, [161] = 0.696, [162] = 0.684,
+    [163] = 0.672, [164] = 0.661, [165] = 0.650, [166] = 0.639, [167] = 0.628, [168] = 0.617,
+    [169] = 0.607, [170] = 0.590, [171] = 0.588, [172] = 0.579, [173] = 0.571, [174] = 0.563,
+    [175] = 0.555, [176] = 0.547, [177] = 0.539, [178] = 0.531, [179] = 0.523, [180] = 0.510,
+    [181] = 0.514, [182] = 0.513, [183] = 0.511, [184] = 0.510, [185] = 0.508, [186] = 0.507,
+    [187] = 0.505, [188] = 0.504, [189] = 0.502, [190] = 0.495, [191] = 0.500, [192] = 0.500,
+    [193] = 0.499, [194] = 0.499, [195] = 0.498, [196] = 0.497, [197] = 0.497, [198] = 0.496,
+    [199] = 0.496, [200] = 0.490,
+}
+
+Individual2_5xVerticalADSScales = {
+    [1] = 65.85, [2] = 32.750, [3] = 22.050, [4] = 16.500, [5] = 13.300, [6] = 11.000,
+    [7] = 9.450, [8] = 8.200, [9] = 7.320, [10] = 6.500, [11] = 5.966, [12] = 5.470,
+    [13] = 5.057, [14] = 4.698, [15] = 4.386, [16] = 4.107, [17] = 3.861, [18] = 3.652,
+    [19] = 3.462, [20] = 3.285, [21] = 3.129, [22] = 2.988, [23] = 2.854, [24] = 2.737,
+    [25] = 2.627, [26] = 2.527, [27] = 2.435, [28] = 2.347, [29] = 2.265, [30] = 2.190,
+    [31] = 2.120, [32] = 2.051, [33] = 1.991, [34] = 1.934, [35] = 1.878, [36] = 1.825,
+    [37] = 1.776, [38] = 1.729, [39] = 1.685, [40] = 1.643, [41] = 1.602, [42] = 1.564,
+    [43] = 1.528, [44] = 1.494, [45] = 1.460, [46] = 1.429, [47] = 1.399, [48] = 1.370,
+    [49] = 1.341, [50] = 1.320, [51] = 1.287, [52] = 1.263, [53] = 1.238, [54] = 1.218,
+    [55] = 1.196, [56] = 1.174, [57] = 1.152, [58] = 1.132, [59] = 1.112, [60] = 1.093,
+    [61] = 1.076, [62] = 1.059, [63] = 1.042, [64] = 1.026, [65] = 1.012, [66] = 0.990,
+    [67] = 0.980, [68] = 0.966, [69] = 0.951, [70] = 0.939, [71] = 0.924, [72] = 0.912,
+    [73] = 0.900, [74] = 0.888, [75] = 0.876, [76] = 0.864, [77] = 0.855, [78] = 0.841,
+    [79] = 0.833, [80] = 0.820, [81] = 0.811, [82] = 0.801, [83] = 0.791, [84] = 0.782,
+    [85] = 0.772, [86] = 0.765, [87] = 0.755, [88] = 0.748, [89] = 0.738, [90] = 0.731,
+    [91] = 0.721, [92] = 0.715, [93] = 0.707, [94] = 0.700, [95] = 0.692, [96] = 0.686,
+    [97] = 0.679, [98] = 0.670, [99] = 0.663, [100] = 0.660, [101] = 0.652, [102] = 0.643,
+    [103] = 0.638, [104] = 0.632, [105] = 0.626, [106] = 0.619, [107] = 0.614, [108] = 0.609,
+    [109] = 0.603, [110] = 0.598, [111] = 0.593, [112] = 0.588, [113] = 0.583, [114] = 0.576,
+    [115] = 0.571, [116] = 0.566, [117] = 0.561, [118] = 0.557, [119] = 0.553, [120] = 0.547,
+    [121] = 0.542, [122] = 0.540, [123] = 0.535, [124] = 0.530, [125] = 0.526, [126] = 0.520,
+    [127] = 0.518, [128] = 0.513, [129] = 0.508, [130] = 0.505, [131] = 0.500, [132] = 0.497,
+    [133] = 0.494, [134] = 0.491, [135] = 0.487, [136] = 0.484, [137] = 0.479, [138] = 0.476,
+    [139] = 0.472, [140] = 0.469, [141] = 0.467, [142] = 0.463, [143] = 0.460, [144] = 0.457,
+    [145] = 0.453, [146] = 0.450, [147] = 0.448, [148] = 0.443, [149] = 0.441, [150] = 0.445,
+    [151] = 0.436, [152] = 0.432, [153] = 0.429, [154] = 0.426, [155] = 0.424, [156] = 0.421,
+    [157] = 0.418, [158] = 0.416, [159] = 0.413, [160] = 0.410, [161] = 0.408, [162] = 0.405,
+    [163] = 0.403, [164] = 0.401, [165] = 0.399, [166] = 0.397, [167] = 0.395, [168] = 0.392,
+    [169] = 0.390, [170] = 0.388, [171] = 0.386, [172] = 0.384, [173] = 0.382, [174] = 0.380,
+    [175] = 0.378, [176] = 0.376, [177] = 0.374, [178] = 0.374, [179] = 0.372, [180] = 0.370,
+    [181] = 0.368, [182] = 0.366, [183] = 0.364, [184] = 0.358, [185] = 0.356, [186] = 0.354,
+    [187] = 0.352, [188] = 0.350, [189] = 0.348, [190] = 0.346, [191] = 0.344, [192] = 0.342,
+    [193] = 0.340, [194] = 0.338, [195] = 0.336, [196] = 0.334, [197] = 0.332, [198] = 0.330,
+    [199] = 0.328, [200] = 0.329,
+}
+
+Individual3_5xHorizontalADSScales = { [1] = 80.2, [2] = 40.1, [3] = 26.7, [4] = 20.0, [5] = 16.0, [6] = 13.3, }
+Individual3_5xVerticalADSScales = { [1] = 80.2, [2] = 40.1, [3] = 26.7, [4] = 20.0, [5] = 16.0, [6] = 13.3, }
+Individual5xHorizontalADSScales = { [1] = 85.2, [2] = 42.6, [3] = 28.4, [4] = 21.3, [5] = 17.0, [6] = 14.2, }
+Individual5xVerticalADSScales = { [1] = 85.2, [2] = 42.6, [3] = 28.4, [4] = 21.3, [5] = 17.0, [6] = 14.2, }
+Individual12xHorizontalADSScales = { [1] = 88.2, [2] = 44.1, [3] = 29.4, [4] = 22.0, [5] = 17.6, [6] = 14.7, }
+Individual12xVerticalADSScales = { [1] = 88.2, [2] = 44.1, [3] = 29.4, [4] = 22.0, [5] = 17.6, [6] = 14.7, }
+
+UseIndividualScaling = true
+InheritFrom1xScope = false
+
+BaselineDPI        = 800
+BaselineHorizSens  = 13
+BaselineVertSens   = 13
+BaselineSensMultiplier = 0.02
+BaselineFOV = 83
+
+BaselineAdvancedADSMultipliers = {
+    ["1x"]   = 36, ["2.5x"] = 66, ["3.5x"] = 80, ["5x"]    = 85, ["12x"]  = 88,
+}
+
+local validationCompleted = false
+local settingsValid = true
+
+function validateSettings()
+    if validationCompleted then return settingsValid end
+    if ClearLog then ClearLog() else OutputLogMessage(string.rep("\n", 60)) end
+
+    local placeholderDetected = false
+    local checks = {
+        {YourMouseModel, "PLACEHOLDER", "YourMouseModel"},
+        {YourDPI, -999, "YourDPI"},
+        {YourHorizSens, -999, "YourHorizSens"},
+        {YourVertSens, -999, "YourVertSens"},
+        {UserFOV, -999, "UserFOV"},
+        {AdvancedADSMultipliers["1x"], -999, "1x scope sensitivity"},
+        {AdvancedADSMultipliers["2.5x"], -999, "2.5x scope sensitivity"},
+        {SensMultiplier, -999, "SensMultiplier"}
+    }
+
+    for _, check in ipairs(checks) do
+        if check[1] == check[2] or (type(check[1]) == "number" and check[1] < 0) then
+            OutputLogMessage("⚠️ WARNING: Please update " .. check[3] .. ".\n")
+            placeholderDetected = true
+        end
+    end
+
+    if EnableAutoDetection and AutoDetectConfig.start_x == 0 then
+        OutputLogMessage("⚠️ WARNING: Auto-Detection is ENABLED but not calibrated.\n")
+        placeholderDetected = true
+    end
+
+    if placeholderDetected then
+        OutputLogMessage("🔧 Please fix the warnings listed above.\n\n")
+        settingsValid = false
+    else
+        settingsValid = true
+    end
+    validationCompleted = true
+    return settingsValid
+end
+
+AttachmentTable = {
+    ["vertical_grip"] = {horizontal = 1.0, vertical = 0.808},
+    ["angled_grip"] = {horizontal = 1.0, vertical = 1.0},
+    ["horizontal_grip"] = {horizontal = 1.0, vertical = 1.0},
+    ["none"] = {horizontal = 1.0, vertical = 1.0},
+    ["compensator"] = {horizontal = 1.0, vertical = 1.0},
+    ["flash_hider"] = {horizontal = 1.34, vertical = 0.86},
+    ["suppressor"] = {horizontal = 1.34, vertical = 1.0},
+    ["extended_barrel"] = {horizontal = 1.34, vertical = 1.0},
+}
+
+local function FindAttachmentInTable(userInput)
+    if not userInput then return nil end
+    if AttachmentTable[userInput] then return AttachmentTable[userInput] end
+    local normalizedInput = string.lower(userInput):gsub(" ", "_")
+    for attachmentName, attachmentData in pairs(AttachmentTable) do
+        local normalizedAttachmentName = string.lower(attachmentName):gsub(" ", "_")
+        if normalizedAttachmentName == normalizedInput then return attachmentData end
+    end
+    return {horizontal = 1.34, vertical = 1.0} 
+end
+
+local function CalculateAttachmentScaling()
+    local totalHorizontalScale, totalVerticalScale = 1.0, 1.0
+    local gripAttachment = FindAttachmentInTable(CurrentGrip)
+    local barrelAttachment = FindAttachmentInTable(CurrentBarrel)
+
+    if gripAttachment then
+        totalHorizontalScale = totalHorizontalScale * gripAttachment.horizontal
+        totalVerticalScale = totalVerticalScale * gripAttachment.vertical
+    end
+    if barrelAttachment then
+        totalHorizontalScale = totalHorizontalScale * barrelAttachment.horizontal
+        totalVerticalScale = totalVerticalScale * barrelAttachment.vertical
+    end
+    
+    totalHorizontalScale = 1.0 + ((totalHorizontalScale - 1.0) * AttachmentRecoilMultiplier)
+    totalVerticalScale = 1.0 + ((totalVerticalScale - 1.0) * AttachmentRecoilMultiplier)
+    return totalHorizontalScale, totalVerticalScale
+end
+
+SidePattern = {}
+VerticalPattern = {}
+
+local function CalculateHorizontalSensitivityScale(currentSens, baselineSens)
+    local controlMultiplier = HorizontalControl and HorizontalStrength or 0
+    local sensMultiplierScale = BaselineSensMultiplier / SensMultiplier
+    return ((baselineSens / currentSens) ^ HorizontalSensExponent) * controlMultiplier * sensMultiplierScale
+end
+
+local function CalculateVerticalSensitivityScale(currentSens, baselineSens)
+    local controlMultiplier = VerticalControl and VerticalStrength or 0
+    local sensMultiplierScale = BaselineSensMultiplier / SensMultiplier
+    return ((baselineSens / currentSens) ^ VerticalSensExponent) * controlMultiplier * sensMultiplierScale
+end
+
+local function CalculateFOVScale(userFOV)
+    local roundedFOV = math.floor(userFOV + 0.5)
+    return FOVScaleTable[roundedFOV] or 1.0
+end
+
+function RandomInterval(min, max) return math.random(min, max) end
+
+local smoothHorizontalTarget = 1.0
+local smoothHorizontalCurrent = 1.0
+local smoothTransitionSpeed = 0.25 -- UPDATED
+local smoothUpdateCounter = 0
+local smoothUpdateInterval = 12    -- UPDATED
+
+local function ApplySmoothHorizontalHumanization(value, strength)
+    if strength <= 0 then return value end
+    smoothUpdateCounter = smoothUpdateCounter + 1
+    if smoothUpdateCounter >= smoothUpdateInterval then
+        smoothHorizontalTarget = 1 + (math.random() - 0.5) * 8.5 * strength -- UPDATED
+        smoothUpdateCounter = 0
+    end
+    local diff = smoothHorizontalTarget - smoothHorizontalCurrent
+    smoothHorizontalCurrent = smoothHorizontalCurrent + (diff * smoothTransitionSpeed)
+    
+    local microVariation = (math.random() - 0.5) * 0.65 * strength
+    local chaosLayer = (math.random() - 0.5) * 0.35 * strength
+    
+    return value * smoothHorizontalCurrent * (1 + microVariation + chaosLayer)
+end
+
+math.randomseed(GetRunningTime())
+
+local function CalculateHorizontalADSScale(adsValue, scopeType)
+    if UseIndividualScaling then
+        local baseScaleValue = nil
+        if scopeType == "1x" then baseScaleValue = Individual1xHorizontalADSScales[adsValue]
+        elseif scopeType == "2.5x" then baseScaleValue = Individual2_5xHorizontalADSScales[adsValue]
+        elseif scopeType == "3.5x" then baseScaleValue = Individual3_5xHorizontalADSScales[adsValue]
+        elseif scopeType == "5x" then baseScaleValue = Individual5xHorizontalADSScales[adsValue]
+        elseif scopeType == "12x" then baseScaleValue = Individual12xHorizontalADSScales[adsValue]
+        else baseScaleValue = IndividualHorizontalADSScales[adsValue] end
+
+        if baseScaleValue then
+            return baseScaleValue * CalculateHorizontalSensitivityScale(YourHorizSens, BaselineHorizSens)
+        end
+    end
+    return 1
+end
+
+local function CalculateVerticalADSScale(adsValue, scopeType)
+    if UseIndividualScaling then
+        local baseScaleValue = nil
+        if scopeType == "1x" then baseScaleValue = Individual1xVerticalADSScales[adsValue]
+        elseif scopeType == "2.5x" then baseScaleValue = Individual2_5xVerticalADSScales[adsValue]
+        elseif scopeType == "3.5x" then baseScaleValue = Individual3_5xVerticalADSScales[adsValue]
+        elseif scopeType == "5x" then baseScaleValue = Individual5xVerticalADSScales[adsValue]
+        elseif scopeType == "12x" then baseScaleValue = Individual12xVerticalADSScales[adsValue]
+        else baseScaleValue = IndividualVerticalADSScales[adsValue] end
+
+        if baseScaleValue then
+            return baseScaleValue * CalculateVerticalSensitivityScale(YourVertSens, BaselineVertSens)
+        end
+    end
+    return 1
+end
+
+local AttackersGameOrder = {
+    "striker", "sledge", "thatcher", "ash", "thermite", "twitch", "montagne",
+    "glaz", "fuze", "blitz", "iq", "buck", "blackbeard", "capitao",
+    "hibana", "jackal", "ying", "zofia", "dokkaebi", "lion", "finka",
+    "maverick", "nomad", "gridlock", "nokk", "amaru", "kali", "iana",
+    "ace", "zero", "flores", "osa", "sens", "grim", "brava",
+    "ram", "deimos", "rauora", "solid snake" -- UPDATED
+}
+local DefendersGameOrder = {
+    "sentry", "smoke", "mute", "castle", "pulse", "doc", "rook",
+    "kapkan", "tachanka", "jager", "bandit", "frost", "valkyrie", "caveira",
+    "echo", "mira", "lesion", "ela", "vigil", "maestro", "alibi",
+    "clash", "kaid", "mozzie", "warden", "goyo", "wamai", "oryx",
+    "melusi", "aruni", "thunderbird", "thorn", "azami", "solis", "fenrir",
+    "tubarao", "skopos", "denari"
+}
+
+local Attackers = {
+    "ace", "amaru", "ash", "blackbeard", "blitz", "brava", "buck",
+    "capitao", "deimos", "dokkaebi", "finka", "flores", "fuze", "glaz",
+    "gridlock", "grim", "hibana", "iana", "iq", "jackal", "kali",
+    "lion", "maverick", "montagne", "nokk", "nomad", "osa", "ram",
+    "rauora", "sens", "sledge", "solid snake", "striker", "thatcher", "thermite", "twitch", -- UPDATED
+    "ying", "zero", "zofia"
+}
+local Defenders = {
+    "alibi", "aruni", "azami", "bandit", "castle", "caveira", "clash",
+    "denari", "doc", "echo", "ela", "fenrir", "frost", "goyo",
+    "jager", "kaid", "kapkan", "lesion", "maestro", "melusi", "mira",
+    "mozzie", "mute", "oryx", "pulse", "rook", "sentry", "skopos",
+    "smoke", "solis", "tachanka", "thorn", "thunderbird", "tubarao", "valkyrie",
+    "vigil", "wamai", "warden"
+}
+
+local OperatorGuns = {
+    ace = {"ak12"}, amaru = {"g8a1", "smg11"}, ash = {"r4c", "g36c"}, blackbeard = {"mk17cqb"},
+    brava = {"para308"}, buck = {"c8sfw"}, capitao = {"para308", "m249"}, deimos = {"ak74m"},
+    dokkaebi = {"smg12", "c75auto"}, finka = {"spear308", "6p41"}, flores = {"ar33", "t95lsw"}, fuze = {"ak12", "6p41"},
+    glaz = {"bearing9"}, gridlock = {"f90", "m249saw"}, grim = {"552commando"}, hibana = {"type89", "bearing9"},
+    iana = {"g36c", "arx200"}, iq = {"g8a1", "552commando", "auga2"}, jackal = {"c7e", "pdw9"},
+    kali = {"spsmg9", "c75auto"}, lion = {"v308"}, maverick = {"m4"}, nomad = {"ak74m", "arx200"},
+    nokk = {"fmg9"}, osa = {"556xi", "pdw9"}, ram = {"r4c", "lmge"}, rauora = {"m249", "reapermk2"},
+    sens = {"pof9"}, sledge = {"l85a2"}, ["solid snake"] = {"f2"}, striker = {"m4", "m249"}, thatcher = {"l85a2", "ar33"}, -- UPDATED
+    thermite = {"556xi"}, twitch = {"f2"}, ying = {"t95lsw"}, zofia = {"m762", "lmge"}, zero = {"sc3000k", "mp7"},
+    alibi = {"mx4storm"}, aruni = {"p10roni"}, azami = {"9x19vsn"}, bandit = {"mp7"}, castle = {"ump45"},
+    caveira = {"m12"}, clash = {"spsmg9"}, doc = {"mp5", "p90"}, denari = {"scorpionevo3a1", "fmg9"},
+    echo = {"mp5sd", "bearing9"}, ela = {"scorpionevo3a1"}, fenrir = {"mp7"}, frost = {"9mmc1"},
+    goyo = {"vector45acp"}, jager = {"416ccarbine"}, kaid = {"auga3"}, kapkan = {"9x19vsn"},
+    lesion = {"t5smg"}, maestro = {"alda556"}, melusi = {"mp5"}, mira = {"vector45acp"},
+    mozzie = {"commando9", "p10roni"}, mute = {"smg11", "mp5k"}, oryx = {"t5smg"}, pulse = {"ump45", "reapermk2"},
+    rook = {"mp5", "p90"}, skopos = {"pcx33"}, smoke = {"smg11", "fmg9"}, sentry = {"commando9", "c75auto"},
+    solis = {"p90", "smg11"}, tachanka = {"dp27", "9x19vsn", "bearing9"}, thorn = {"uzk50gi", "c75auto"},
+    thunderbird = {"spear308", "bearing9"}, tubarao = {"mpx"}, valkyrie = {"mpx"}, vigil = {"k1a", "smg12", "c75auto"},
+    warden = {"smg12", "mpx"}, wamai = {"auga2", "mp5k"}
+}
+
+local Magnifications = {"1x", "2.5x"}
+local isAttackers = true
+local currentOperator = 1
+local currentGun = 1
+local currentScope = 1
+local operatorScopeMemory = { attackers = {}, defenders = {} }
+local operatorWeaponMemory = { attackers = {}, defenders = {} }
+local MouseButtonMappings = {
+    ["G Pro Superlight"] = { middle = 3, backSide = 4, forwardSide = 5 },
+    ["G Pro"] = { middle = 3, backSide = 4, forwardSide = 5 },
+    ["G502"] = { middle = 3, backSide = 4, forwardSide = 5 },
+    ["G903"] = { middle = 3, backSide = 4, forwardSide = 5 },
+    ["G403"] = { middle = 3, backSide = 4, forwardSide = 5 },
+    ["G305"] = { middle = 3, backSide = 4, forwardSide = 5 },
+    ["G703"] = { middle = 3, backSide = 4, forwardSide = 5 },
+    ["G604"] = { middle = 3, backSide = 11, forwardSide = 12 },
+    ["G309"] = { middle = 3, backSide = 5, forwardSide = 4 },
+    ["G203"] = { middle = 3, backSide = 5, forwardSide = 4 }
+}
+
+MiddleMouseButton = 3
+BackSideButton = 4
+ForwardSideButton = 5
+
+local function GetMouseButtonName(buttonId)
+    local names = { [1]="Left", [2]="Right", [3]="Middle", [4]="Back", [5]="Forward" }
+    return names[buttonId] or "Button " .. tostring(buttonId)
+end
+
+local function ConfigureMouseButtons()
+    local mapping = MouseButtonMappings[YourMouseModel]
+    if mapping then
+        MiddleMouseButton = mapping.middle
+        BackSideButton = mapping.backSide
+        ForwardSideButton = mapping.forwardSide
+    end
+end
+
+local function GetTeamTable() return isAttackers and Attackers or Defenders end
+local function GetTeamName() return string.lower(isAttackers and "ATTACKERS" or "DEFENDERS") end
+local function GetCurrentOperator() return GetTeamTable()[currentOperator] end
+local function GetCurrentGun()
+    local operator = GetCurrentOperator()
+    local guns = OperatorGuns[operator]
+    return (guns and guns[currentGun]) and guns[currentGun] or "N/A"
+end
+local function GetCurrentScope() return Magnifications[currentScope] end
+
+local function SaveOperatorScope()
+    local teamKey = isAttackers and "attackers" or "defenders"
+    local operatorName = GetCurrentOperator()
+    if operatorName then operatorScopeMemory[teamKey][operatorName] = currentScope end
+end
+
+local function RestoreOperatorScope()
+    local teamKey = isAttackers and "attackers" or "defenders"
+    local operatorName = GetCurrentOperator()
+    if operatorName and operatorScopeMemory[teamKey][operatorName] then
+        currentScope = operatorScopeMemory[teamKey][operatorName]
+    else
+        currentScope = (isAttackers and DefaultAttackerScope or DefaultDefenderScope) == "2.5x" and 2 or 1
+    end
+end
+
+local function SaveOperatorWeapon()
+    local teamKey = isAttackers and "attackers" or "defenders"
+    local operatorName = GetCurrentOperator()
+    if operatorName then operatorWeaponMemory[teamKey][operatorName] = currentGun end
+end
+
+local function RestoreOperatorWeapon()
+    local teamKey = isAttackers and "attackers" or "defenders"
+    local operatorName = GetCurrentOperator()
+    if operatorName and operatorWeaponMemory[teamKey][operatorName] then
+        currentGun = operatorWeaponMemory[teamKey][operatorName]
+    else
+        currentGun = 1
+    end
+end
+
+local autoDetectSetupState = nil
+local autoDetectSetupData = {}
+
+local function HandleAutoDetectSetup()
+    if not AutoDetectSetupMode then return false end
+
+    local mouseX, mouseY = GetMousePosition()
+
+    if not autoDetectSetupState then
+        OutputLogMessage("\n========================================\n")
+        OutputLogMessage("  STEP 1 of 5\n")
+        OutputLogMessage("========================================\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("Go to your mode of choices operator selection screen.\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("Find the TOP-LEFT operator (Striker for attackers, Sentry for defenders).\n")
+        OutputLogMessage("HOVER over it so the BLUE OUTLINE appears.\n")
+        OutputLogMessage("Click on the TOP-LEFT CORNER of the BLUE OUTLINE (not the icon itself).\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("Then: Hold Right Shift + Press Middle Mouse Button\n")
+        OutputLogMessage("\n")
+        autoDetectSetupState = 1
+        return true
+    elseif autoDetectSetupState == 1 then
+        autoDetectSetupData.start_x = mouseX
+        autoDetectSetupData.start_y = mouseY
+        OutputLogMessage("\n✓ GOT IT! Recorded: %d, %d\n\n", mouseX, mouseY)
+        OutputLogMessage("========================================\n")
+        OutputLogMessage("  STEP 2 of 5\n")
+        OutputLogMessage("========================================\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("Stay on the SAME operator (Striker/Sentry).\n")
+        OutputLogMessage("Keep it HOVERED so the BLUE OUTLINE is still visible.\n")
+        OutputLogMessage("Click on the BOTTOM-RIGHT CORNER of the BLUE OUTLINE (not the icon itself).\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("Then: Hold Right Shift + Press Middle Mouse Button\n")
+        OutputLogMessage("\n")
+        autoDetectSetupState = 2
+        return true
+    elseif autoDetectSetupState == 2 then
+        autoDetectSetupData.op_size_x = mouseX - autoDetectSetupData.start_x
+        autoDetectSetupData.op_size_y = mouseY - autoDetectSetupData.start_y
+        OutputLogMessage("\n✓ PERFECT! Operator size: %d x %d\n\n", autoDetectSetupData.op_size_x, autoDetectSetupData.op_size_y)
+        OutputLogMessage("========================================\n")
+        OutputLogMessage("  STEP 3 of 5 - Halfway there!\n")
+        OutputLogMessage("========================================\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("Find ANY operator in the FAR RIGHT column (last column).\n")
+        OutputLogMessage("Put your mouse on the RIGHT EDGE of the BLUE OUTLINE of that operator.\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("Then: Hold Right Shift + Press Middle Mouse Button\n")
+        OutputLogMessage("\n")
+        autoDetectSetupState = 3
+        return true
+    elseif autoDetectSetupState == 3 then
+        autoDetectSetupData.end_x = mouseX
+        OutputLogMessage("\n✓ AWESOME! Right edge: %d\n\n", mouseX)
+        OutputLogMessage("========================================\n")
+        OutputLogMessage("  STEP 4 of 5\n")
+        OutputLogMessage("========================================\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("Find ANY operator in the BOTTOM row (last row visible).\n")
+        OutputLogMessage("Put your mouse on the BOTTOM EDGE of the BLUE OUTLINE of that operator.\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("Then: Hold Right Shift + Press Middle Mouse Button\n")
+        OutputLogMessage("\n")
+        autoDetectSetupState = 4
+        return true
+    elseif autoDetectSetupState == 4 then
+        autoDetectSetupData.end_y = mouseY
+        OutputLogMessage("\n✓ GREAT! Bottom edge: %d\n\n", mouseY)
+        OutputLogMessage("========================================\n")
+        OutputLogMessage("  STEP 5 of 5 - LAST ONE!\n")
+        OutputLogMessage("========================================\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("Find the TOP ROW of operators (first row visible).\n")
+        OutputLogMessage("Do NOT hover over any operators, put your mouse INBETWEEN 2 operators alligned with the top edge.\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("Then: Hold Right Shift + Press Middle Mouse Button\n")
+        OutputLogMessage("\n")
+        autoDetectSetupState = 5
+        return true
+    elseif autoDetectSetupState == 5 then
+        autoDetectSetupData.y_add = autoDetectSetupData.start_y - mouseY
+        autoDetectSetupData.start_y = autoDetectSetupData.start_y - autoDetectSetupData.y_add
+        autoDetectSetupData.end_y = autoDetectSetupData.end_y - autoDetectSetupData.y_add
+        autoDetectSetupData.horizontal_count = 7
+        autoDetectSetupData.vertical_count = 6
+
+        OutputLogMessage("\n========================================\n")
+        OutputLogMessage("  ✓✓✓ ALL DONE! ✓✓✓\n")
+        OutputLogMessage("========================================\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("COPY THIS CODE:\n")
+        OutputLogMessage("(Select it all and copy it)\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("AutoDetectConfig = {\n")
+        OutputLogMessage(string.format("    start_x = %d,\n", autoDetectSetupData.start_x))
+        OutputLogMessage(string.format("    start_y = %d,\n", autoDetectSetupData.start_y))
+        OutputLogMessage(string.format("    end_x = %d,\n", autoDetectSetupData.end_x))
+        OutputLogMessage(string.format("    end_y = %d,\n", autoDetectSetupData.end_y))
+        OutputLogMessage(string.format("    op_size_x = %d,\n", autoDetectSetupData.op_size_x))
+        OutputLogMessage(string.format("    op_size_y = %d,\n", autoDetectSetupData.op_size_y))
+        OutputLogMessage(string.format("    y_add = %d,\n", autoDetectSetupData.y_add))
+        OutputLogMessage("    horizontal_count = 7,\n")
+        OutputLogMessage("    vertical_count = 6\n")
+        OutputLogMessage("}\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("NOW DO THIS:\n")
+        OutputLogMessage("1. Find the auto detection configs in the script (around line 80)\n")
+        OutputLogMessage("2. Whatever game-mode you just did this setup in, rename a preset to that mode\n")
+        OutputLogMessage("3. And paste the config code you just copied into that preset\n")
+        OutputLogMessage("4. Change 'AutoDetectSetupMode = true' to 'false'\n")
+        OutputLogMessage("5. Change 'EnableAutoDetection = false' to 'true'\n")
+        OutputLogMessage("6. Save the script and reload it!\n")
+        OutputLogMessage("\n")
+        OutputLogMessage("You're ready to use auto-detection!\n")
+        OutputLogMessage("========================================\n")
+        OutputLogMessage("\n")
+
+        autoDetectSetupState = 6
+        return true
+    end
+
+    return false
+end
+
+-- UPDATED AUTO-DETECT LOGIC (BUG FIXES)
+local function GetClickedOperator()
+    if not EnableAutoDetection then return nil end
+    local mouseX, mouseY = GetMousePosition()
+    local config = AutoDetectConfig
+    local yOffset = IsKeyLockOn(ToggleKey) and config.y_add or 0
+    local startY, endY = config.start_y + yOffset, config.end_y + yOffset
+    local sepX = ((config.end_x - config.start_x) - (config.op_size_x * config.horizontal_count)) / config.horizontal_count
+    local sepY = ((endY - startY) - (config.op_size_y * config.vertical_count)) / config.vertical_count
+
+    local xOperator = nil
+    local yOperator = nil
+    local tryX = config.start_x
+    local tryY = startY
+    local i = 1
+
+    while not xOperator do
+        if mouseX < config.start_x or mouseX > config.end_x or i > config.horizontal_count then return nil end
+        local xEnd = tryX + config.op_size_x
+        if mouseX >= tryX and mouseX <= xEnd then
+            xOperator = i
+            break
+        end
+        i = i + 1
+        tryX = xEnd + sepX
+    end
+
+    i = 1
+    while not yOperator do
+        if mouseY < startY or mouseY > endY or i > config.vertical_count then return nil end
+        local yEnd = tryY + config.op_size_y
+        if mouseY >= tryY and mouseY <= yEnd then
+            yOperator = i
+            break
+        end
+        i = i + 1
+        tryY = yEnd + sepY
+    end
+
+    if xOperator and yOperator then 
+        return xOperator + ((yOperator - 1) * config.horizontal_count) 
+    end
+    return nil
+end
+
+local function UpdateCurrentSelections()
+    CurrentOperator = GetCurrentOperator()
+    CurrentWeapon   = GetCurrentGun()
+    CurrentScope    = GetCurrentScope()
+    local opTable = OperatorWeapons[CurrentOperator]
+    if opTable and opTable[CurrentWeapon] then
+        SidePattern     = opTable[CurrentWeapon].SidePattern or {{dir = 0, duration = 1, strength = 0}}
+        VerticalPattern = opTable[CurrentWeapon].VerticalPattern or {{dir = 0, duration = 1, strength = 0}}
+    else
+        SidePattern, VerticalPattern = {{dir=0,duration=1,strength=0}}, {{dir=0,duration=1,strength=0}}
+    end
+
+    local adsValue = UseAdvancedADS and (AdvancedADSMultipliers[CurrentScope] or 36) or GlobalADSMult
+    local hScale = CalculateHorizontalADSScale(adsValue, CurrentScope)
+    local vScale = CalculateVerticalADSScale(adsValue, CurrentScope)
+    local fScale = CalculateFOVScale(UserFOV)
+    local attH, attV = CalculateAttachmentScaling()
+    horizontalScale = hScale * fScale * attH
+    verticalScale   = vScale * fScale * attV
+end
+
+local function PrintMenu()
+    if not validateSettings() then return end
+    
+    if ClearLog then ClearLog() else OutputLogMessage(string.rep("\n", 60)) end
+
+    local teamOps = GetTeamTable()
+    local teamName = isAttackers and "ATTACKERS" or "DEFENDERS"
+    local status = EnableRCS and "[ ENABLED ]" or "[ DISABLED ]"
+    
+    local curOp = string.upper(GetCurrentOperator())
+    local curGun = string.upper(GetCurrentGun())
+    local curScope = string.upper(GetCurrentScope())
+
+    local out = "\n"
+    out = out .. "_____________________________________________________________________________________\n"
+    out = out .. " NEXRA ELITE | SIDE: " .. teamName .. " | SYSTEM: " .. status .. "\n"
+    out = out .. "_____________________________________________________________________________________\n"
+    out = out .. " OP: " .. curOp .. " | GUN: " .. curGun .. " | SCOPE: " .. curScope .. "\n"
+    out = out .. "-------------------------------------------------------------------------------------\n"
+
+    local columns = 6
+    local colWidth = 14  
+    local totalOps = #teamOps
+    local rows = math.ceil(totalOps / columns)
+
+    for r = 1, rows do
+        local rowStr = " "
+        for c = 1, columns do
+            local idx = ((r - 1) * columns) + c
+            
+            if idx <= totalOps then
+                local opName = teamOps[idx]
+                opName = opName:sub(1,1):upper() .. opName:sub(2)
+                
+                local prefix = (idx == currentOperator) and "[✅]" or " .. "
+                local cellText = prefix .. opName
+                
+                if #cellText > (colWidth - 1) then 
+                    cellText = cellText:sub(1, colWidth - 2) .. "." 
+                end
+                
+                local padding = colWidth - #cellText
+                if padding > 0 then 
+                    cellText = cellText .. string.rep(" ", padding) 
+                end
+                
+                rowStr = rowStr .. cellText
+            else
+                rowStr = rowStr .. string.rep(" ", colWidth)
+            end
+        end
+        out = out .. rowStr .. "\n"
+    end
+    
+    out = out .. "_____________________________________________________________________________________\n"
+
+    OutputLogMessage(out)
+end
+
+EnablePrimaryMouseButtonEvents(true)
+ConfigureMouseButtons()
+UpdateCurrentSelections()
+if validateSettings() then PrintMenu() end
+
+local toggleState = false
+local lastToggleCheck = false
+local lastShotEndTime = 0
+local recoilStartTime = 0
+local recoilActive = false
+local rapidFireActive = false
+
+if AutoDetectSetupMode then
+    if ClearLog then ClearLog() end
+    OutputLogMessage("\n")
+    OutputLogMessage("========================================\n")
+    OutputLogMessage("   SETUP MODE IS ACTIVE!\n")
+    OutputLogMessage("========================================\n")
+    OutputLogMessage("\n")
+    OutputLogMessage("DO NOT save or reload the script until finished!\n")
+    OutputLogMessage("\n")
+    OutputLogMessage("INSTRUCTIONS:\n")
+    OutputLogMessage("1. Go to the Operator Selection screen in Siege.\n")
+    OutputLogMessage("2. Find the TOP-LEFT operator (Striker/Sentry).\n")
+    OutputLogMessage("3. Hover over it to see the BLUE OUTLINE.\n")
+    OutputLogMessage("4. Click the TOP-LEFT CORNER of that blue outline.\n")
+    OutputLogMessage("\n")
+    OutputLogMessage("ACTION: Hold 'Right Shift' + Press 'Middle Mouse Button' to capture.\n")
+    OutputLogMessage("\n")
+    OutputLogMessage("Check the log after every click for the next step.\n")
+    OutputLogMessage("========================================\n\n")
+end
+
+function OnEvent(event, arg)
+    if not validateSettings() then return end
+
+    if event == "MOUSE_BUTTON_PRESSED" and arg == MiddleMouseButton and IsModifierPressed(AutoDetectModifier) then
+        if AutoDetectSetupMode then
+            HandleAutoDetectSetup()
+            return
+        end
+    end
+
+    if not EnableRCS then return end
+
+    if event == "MOUSE_BUTTON_PRESSED" then
+        if MenuLocked and not (arg == ForwardSideButton and IsModifierPressed("rctrl")) then
+            if IsModifierPressed("ctrl") or IsModifierPressed("alt") or IsModifierPressed("rshift") then
+                OutputLogMessage("🔒 Menu is locked! Press Right Ctrl + Front Side Button to unlock\n")
+                return 
+            end
+        end
+        
+        if arg == ForwardSideButton and IsModifierPressed("rctrl") then
+            MenuLocked = not MenuLocked
+            OutputLogMessage(MenuLocked and "🔒 LOCKED\n" or "🔓 UNLOCKED\n")
+        end
+
+        if arg == MiddleMouseButton and IsModifierPressed("ctrl") then
+            SaveOperatorScope(); SaveOperatorWeapon()
+            isAttackers = not isAttackers
+            currentOperator, currentGun = 1, 1
+            RestoreOperatorScope(); RestoreOperatorWeapon()
+            UpdateCurrentSelections(); PrintMenu()
+        end
+
+        if arg == BackSideButton and IsModifierPressed("ctrl") then
+            local guns = OperatorGuns[GetCurrentOperator()]
+            if guns then
+                currentGun = currentGun + 1
+                if currentGun > #guns then currentGun = 1 end
+                UpdateCurrentSelections(); PrintMenu()
+            end
+        end
+
+        if arg == MiddleMouseButton and IsModifierPressed("alt") then
+            currentScope = currentScope + 1
+            if currentScope > #Magnifications then currentScope = 1 end
+            UpdateCurrentSelections(); PrintMenu()
+        end
+
+        if arg == BackSideButton and IsModifierPressed("alt") then
+            SaveOperatorScope(); SaveOperatorWeapon()
+            currentOperator = currentOperator + 1
+            if currentOperator > #GetTeamTable() then currentOperator = 1 end
+            currentGun = 1
+            RestoreOperatorScope(); RestoreOperatorWeapon()
+            UpdateCurrentSelections(); PrintMenu()
+        end
+
+        if arg == BackSideButton and IsModifierPressed("rctrl") then
+            SaveOperatorScope(); SaveOperatorWeapon()
+            currentOperator = currentOperator - 1
+            if currentOperator < 1 then currentOperator = #GetTeamTable() end
+            currentGun = 1
+            RestoreOperatorScope(); RestoreOperatorWeapon()
+            UpdateCurrentSelections(); PrintMenu()
+        end
+
+        if arg == 1 and IsModifierPressed(AutoDetectModifier) and EnableAutoDetection and not AutoDetectSetupMode then
+            local idx = GetClickedOperator()
+            if idx then
+                local opList = isAttackers and AttackersGameOrder or DefendersGameOrder
+                local opName = opList[idx]
+                if opName then 
+                    for i, op in ipairs(GetTeamTable()) do
+                        if op == opName then
+                            SaveOperatorScope(); SaveOperatorWeapon()
+                            currentOperator = i; currentGun = 1
+                            RestoreOperatorScope(); RestoreOperatorWeapon()
+                            UpdateCurrentSelections(); PrintMenu()
+                            OutputLogMessage("✓ Auto-detected: " .. opName .. "\n")
+                            break
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    if not rapidFireActive then
+        local currentToggleCheck = IsKeyLockOn(ToggleKey)
+        if RequireToggle and currentToggleCheck ~= lastToggleCheck then
+            toggleState = currentToggleCheck
+            OutputLogMessage("Recoil: " .. (toggleState and "ON" or "OFF") .. "\n")
+            lastToggleCheck = currentToggleCheck
+        elseif not RequireToggle then
+            toggleState = true
+        end
+    end
+
+    if event == "MOUSE_BUTTON_PRESSED" and arg == 1 and IsMouseButtonPressed(3) and toggleState and not rapidFireActive then
+         local sideIndex, vertIndex = 1, 1
+         local sideAccum, vertAccum = 0, 0
+         local sideTickCounter, vertTickCounter = 0, 0
+         
+         local sideStep = SidePattern[1] or {duration=1, strength=0, dir=0}
+         local vertStep = VerticalPattern[1] or {duration=1, strength=0, dir=0}
+         
+         local sideTicks = math.max(1, math.floor(sideStep.duration / DelayRate))
+         local vertTicks = math.max(1, math.floor(vertStep.duration / DelayRate))
+         local sideTotalMove = (sideStep.strength or 0) * sideStep.dir * horizontalScale
+         local vertTotalMove = (vertStep.strength or 0) * vertStep.dir * verticalScale
+         
+         recoilStartTime = GetRunningTime()
+
+         repeat
+            if EnableRapidFire and IsMouseButtonPressed(RapidFireKey) then break end
+
+            if GetRunningTime() - recoilStartTime >= RecoilStartDelay then
+                local sideStepMove = sideTotalMove / sideTicks
+                local vertStepMove = vertTotalMove / vertTicks
+
+                -- UPDATED HUMANIZER USAGE
+                sideStepMove = ApplySmoothHorizontalHumanization(sideStepMove, HumanizerStrength * 2.2)
+                local vertVariation = (math.random() - 0.5) * 0.5 * HumanizerStrength
+                vertStepMove = vertStepMove * (1 - HumanizerStrength * 0.55 + vertVariation)
+
+                sideAccum = sideAccum + sideStepMove
+                vertAccum = vertAccum + vertStepMove
+
+                local moveX = math.floor(sideAccum + 0.5)
+                local moveY = math.floor(vertAccum + 0.5)
+
+                if not HorizontalControl then moveX = 0 end
+                if not VerticalControl then moveY = 0 end
+
+                if moveX ~= 0 or moveY ~= 0 then
+                    MoveMouseRelative(moveX, moveY)
+                    sideAccum = sideAccum - moveX
+                    vertAccum = vertAccum - moveY
+                end
+
+                sideTickCounter = sideTickCounter + 1
+                vertTickCounter = vertTickCounter + 1
+
+                if sideTickCounter >= sideTicks then
+                    sideIndex = sideIndex + 1
+                    if sideIndex > #SidePattern then sideIndex = 1 end
+                    sideStep = SidePattern[sideIndex]
+                    sideTicks = math.max(1, math.floor(sideStep.duration / DelayRate))
+                    sideTotalMove = (sideStep.strength or 0) * sideStep.dir * horizontalScale
+                    sideTickCounter = 0
+                end
+
+                if vertTickCounter >= vertTicks then
+                    vertIndex = vertIndex + 1
+                    if vertIndex > #VerticalPattern then vertIndex = 1 end
+                    vertStep = VerticalPattern[vertIndex]
+                    vertTicks = math.max(1, math.floor(vertStep.duration / DelayRate))
+                    vertTotalMove = (vertStep.strength or 0) * vertStep.dir * verticalScale
+                    vertTickCounter = 0
+                end
+            end
+            Sleep(DelayRate)
+         until not IsMouseButtonPressed(1) or not IsMouseButtonPressed(3)
+    end
+
+    if EnableRapidFire and event == "MOUSE_BUTTON_PRESSED" and arg == RapidFireKey then
+        rapidFireActive = true
+        repeat
+            PressMouseButton(1)
+            for i = 1, 5 do
+                MoveMouseRelative(0, RapidFireRecoilStrength)
+                Sleep(1)
+            end
+            ReleaseMouseButton(1)
+            Sleep(RandomInterval(RapidFireMinDelay, RapidFireMaxDelay))
+        until not IsMouseButtonPressed(RapidFireKey)
+        rapidFireActive = false
+    end
+end
